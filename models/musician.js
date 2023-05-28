@@ -4,12 +4,12 @@ const Instrument = require("./instrument");
 const Genre = require("./genre");
 
 class Musician {
-  constructor(data) {
-    if (data) {
-      this.musicianId = data.musician_id;
-      this.userId = data.user_id;
-      this.experience = data.experience;
-    }
+  constructor(musicianData) {
+    this.musicianId = musicianData.musician_id;
+    this.userId = musicianData.user_id;
+    this.instrumentId = musicianData.instrument_id;
+    this.genreId = musicianData.genre_id;
+    this.experience = musicianData.experience;
   }
 
   static async createMusician(userId, experience) {
