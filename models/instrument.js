@@ -35,6 +35,20 @@ class Instrument {
       throw new Error("Failed to get instruments");
     }
   }
+
+  static async deleteInstrument(instrumentId) {
+    const query = `
+      DELETE FROM instrument
+      WHERE instrument_id = $1
+    `;
+    const values = [instrumentId];
+
+    try {
+      await pool.query(query, values);
+    } catch (error) {
+      throw new Error("Failed to delete instrument");
+    }
+  }
 }
 
 module.exports = Instrument;
