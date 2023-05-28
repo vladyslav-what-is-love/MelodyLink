@@ -8,7 +8,7 @@ const pool = new Pool({
   database: "music_search",
 });
 
-async function testDatabaseConnection() {
+/*async function testDatabaseConnection() {
   try {
     // Виконання запиту для перевірки з'єднання
     const client = await pool.connect();
@@ -23,4 +23,6 @@ async function testDatabaseConnection() {
 }
 
 // Виклик функції перевірки з'єднання
-testDatabaseConnection();
+testDatabaseConnection();*/
+
+module.exports = pool;
