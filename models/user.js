@@ -106,6 +106,36 @@ class User {
       throw new Error("Failed to get user role");
     }
   }
+
+  static async updateUserByMusicianId(musicianId, updates) {
+    const { firstName, lastName, email, phone, image, rating, location } =
+      updates;
+
+    const query = `
+      UPDATE users
+      SET first_name = $1, last_name = $2, email = $3, phone = $4, image = $5, rating = $6, location = $7
+      FROM musician
+      WHERE musician.musician_id = $8 AND musician.user_id = users.user_id
+      RETURNING users.*
+    `;
+    const values = [
+      firstName,
+      lastName,
+      email,
+      phone,
+      image,
+      rating,
+      location,
+      musicianId,
+    ];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      return rows[0];
+    } catch (error) {
+      throw new Error("Failed to update user");
+    }
+  }
 }
 
 module.exports = User;
