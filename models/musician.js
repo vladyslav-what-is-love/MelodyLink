@@ -1,5 +1,6 @@
 const pool = require("../db");
 const User = require("./user");
+const Instrument = require("./instrument");
 
 class Musician {
   static async createMusician(userId, instrumentIds, genreIds, experience) {
@@ -139,6 +140,43 @@ class Musician {
       return rows;
     } catch (error) {
       throw new Error("Failed to get musicians");
+    }
+  }
+
+  static async getMusiciansByInstruments(instrumentIds) {
+    const query = `
+      SELECT * 
+      FROM musician 
+      INNER JOIN musician_instrument ON musician.musician_id = musician_instrument.musician_id 
+      WHERE musician_instrument.instrument_id IN (${instrumentIds
+        .map((_, index) => `$${index + 1}`)
+        .join(", ")})
+    `;
+    const values = instrumentIds;
+
+    try {
+      const { rows } = await pool.query(query, values);
+      return rows;
+    } catch (error) {
+      throw new Error("Failed to get musicians by instruments");
+    }
+  }
+
+  static async getInstrumentsByMusicianId(musicianId) {
+    const query = `
+      SELECT instrument_id
+      FROM musician_instrument
+      WHERE musician_id = $1
+    `;
+    const values = [musicianId];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      const instrumentIds = rows.map((row) => row.instrument_id);
+      const instruments = await Instrument.getInstrumentsByIds(instrumentIds);
+      return instruments;
+    } catch (error) {
+      throw new Error("Failed to get instruments by musician ID");
     }
   }
 }
