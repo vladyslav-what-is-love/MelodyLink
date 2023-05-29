@@ -1,11 +1,14 @@
 const pool = require("../db");
-//const Musician = require("./musician");
-//const Organizer = require("./organizer");
+const Instrument = require("../models/instrument");
+const Musician = require("../models/musician");
+const Organizer = require("../models/organizer");
+const CooperationRequest = require("../models/cooperationRequest");
 
 class CooperationRequestController {
   static async createCooperationRequest(req, res) {
     try {
       const { musician_id, organizer_id, request_date, status } = req.body;
+      console.log(req.body);
       const createdRequest = await CooperationRequest.createCooperationRequest(
         musician_id,
         organizer_id,
@@ -14,6 +17,7 @@ class CooperationRequestController {
       );
       res.status(201).json(createdRequest);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error: "Failed to create cooperation request" });
     }
   }

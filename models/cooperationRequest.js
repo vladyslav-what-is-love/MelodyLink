@@ -20,12 +20,13 @@ class CooperationRequest {
     const query =
       "INSERT INTO cooperation_requests (musician_id, organizer_id, request_date, status) VALUES ($1, $2, $3, $4) RETURNING *";
     const values = [musician_id, organizer_id, request_date, status];
-
+    console.log(query);
     try {
       const { rows } = await pool.query(query, values);
       const requestData = rows[0];
       return new CooperationRequest(requestData);
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to create cooperation request");
     }
   }

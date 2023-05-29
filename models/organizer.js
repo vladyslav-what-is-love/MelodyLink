@@ -90,6 +90,7 @@ class Organizer {
     `;
     try {
       const { rows } = await pool.query(query);
+      console.log(rows);
       return rows.map((row) => ({
         user: new User(row),
         organizer: new Organizer(row),

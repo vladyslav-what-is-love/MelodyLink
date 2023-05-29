@@ -6,14 +6,14 @@ const Genre = require("./genre");
 class Musician {
   constructor(musicianData) {
     this.musicianId = musicianData.musician_id;
-    this.userId = musicianData.user_id;
+    this.user_id = musicianData.user_id;
     this.experience = musicianData.experience;
   }
 
-  static async createMusician(userId, experience) {
+  static async createMusician(user_id, experience) {
     const query =
       "INSERT INTO musician (user_id, experience) VALUES ($1, $2) RETURNING *";
-    const values = [userId, experience];
+    const values = [user_id, experience];
 
     try {
       const { rows } = await pool.query(query, values);
@@ -36,10 +36,10 @@ class Musician {
   }
 
   static async updateMusician(musicianId, updates) {
-    const { userId, experience } = updates;
+    const { user_id, experience } = updates;
     const query =
       "UPDATE musician SET user_id = $1, experience = $2 WHERE musician_id = $3 RETURNING *";
-    const values = [userId, experience, musicianId];
+    const values = [user_id, experience, musicianId];
 
     try {
       const { rows } = await pool.query(query, values);
@@ -60,11 +60,34 @@ class Musician {
     }
   }
 
-  static async getAllMusicians() {
-    const query = "SELECT * FROM musician";
+  /*static async getAllMusicians() {
+    const query = `
+      SELECT u.*, m.*
+      FROM users u
+      JOIN musician m ON u.user_id = m.user_id
+      WHERE u.entity_type = 'musician'
+    `;
     try {
       const { rows } = await pool.query(query);
       return rows.map((row) => new Musician(row));
+    } catch (error) {
+      throw new Error("Failed to get musicians");
+    }
+  }*/
+  static async getAllMusicians() {
+    const query = `
+      SELECT u.*, m.*
+      FROM users u
+      JOIN musician m ON u.user_id = m.user_id
+      WHERE u.entity_type = 'musician'
+    `;
+    try {
+      const { rows } = await pool.query(query);
+      console.log(rows);
+      return rows.map((row) => ({
+        //user: new User(row),
+        musician: new Musician(row),
+      }));
     } catch (error) {
       throw new Error("Failed to get musicians");
     }

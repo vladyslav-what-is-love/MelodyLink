@@ -28,7 +28,7 @@ app.use("/instruments", instrumentRouter);
 app.use("/organizers", organizerRouter);
 app.use("/musicians", musicianRouter);
 app.use("/users", userRouter);
-app.use("/cooperation-requests", cooperationRequestRouter);
+app.use("/cooperationrequests", cooperationRequestRouter);
 
 /*app.post("/instruments", (req, res) => {
   let data = req.body;
