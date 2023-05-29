@@ -15,12 +15,14 @@ const instrumentRouter = require("./routes/instrumentRouter");
 const organizerRouter = require("./routes/organizerRouter");
 const musicianRouter = require("./routes/musicianRouter");
 const userRouter = require("./routes/userRouter");
+const cooperationRequestRouter = require("./routes/cooperationRequestRouter");
 
 app.use("/genres", genreRouter);
 app.use("/instruments", instrumentRouter);
 app.use("/organizers", organizerRouter);
 app.use("/musicians", musicianRouter);
 app.use("/users", userRouter);
+app.use("/cooperation-requests", cooperationRequestRouter);
 
 // Обробка помилок
 app.use((err, req, res, next) => {
