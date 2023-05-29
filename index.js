@@ -12,8 +12,11 @@ const pool = require("./db");
 // Реєстрація маршрутів
 const genreRouter = require("./routes/genreRouter");
 const instrumentRouter = require("./routes/instrumentRouter");
+const organizerRouter = require("./routes/organizerRouter");
+
 app.use("/genres", genreRouter);
 app.use("/instruments", instrumentRouter);
+app.use("/organizers", organizerRouter);
 
 // Запуск сервера
 app.listen(port, () => {
