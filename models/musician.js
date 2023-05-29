@@ -7,8 +7,6 @@ class Musician {
   constructor(musicianData) {
     this.musicianId = musicianData.musician_id;
     this.userId = musicianData.user_id;
-    this.instrumentId = musicianData.instrument_id;
-    this.genreId = musicianData.genre_id;
     this.experience = musicianData.experience;
   }
 

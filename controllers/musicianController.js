@@ -52,7 +52,7 @@ const deleteMusician = async (req, res) => {
 
   try {
     await Musician.deleteMusician(musician_id);
-    res.status(204).end();
+    res.json({ message: "Musician deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete musician" });
   }
