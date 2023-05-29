@@ -80,6 +80,24 @@ class Organizer {
       throw new Error("Failed to search organizers by company");
     }
   }
+
+  static async getAllOrganizers() {
+    const query = `
+      SELECT u.*, o.*
+      FROM users u
+      JOIN organizers o ON u.user_id = o.user_id
+      WHERE u.entity_type = 'organizer'
+    `;
+    try {
+      const { rows } = await pool.query(query);
+      return rows.map((row) => ({
+        user: new User(row),
+        organizer: new Organizer(row),
+      }));
+    } catch (error) {
+      throw new Error("Failed to get organizers");
+    }
+  }
 }
 
 module.exports = Organizer;

@@ -125,10 +125,22 @@ class User {
   }
 
   static async deleteUser(userId) {
-    const query = "DELETE FROM users WHERE user_id = $1";
-    const values = [userId];
-
     try {
+      // Перевіряємо, чи користувач є музикантом
+      const musician = await Musician.getMusicianByUserId(userId);
+      if (musician) {
+        await Musician.deleteMusician(musician.musician_id);
+      }
+
+      // Перевіряємо, чи користувач є організатором
+      const organizer = await Organizer.getOrganizerByUserId(userId);
+      if (organizer) {
+        await Organizer.deleteOrganizer(organizer.organizer_id);
+      }
+
+      // Видаляємо користувача
+      const query = "DELETE FROM users WHERE user_id = $1";
+      const values = [userId];
       await pool.query(query, values);
     } catch (error) {
       throw new Error("Failed to delete user");
@@ -142,21 +154,6 @@ class User {
       return rows.map((row) => new User(row));
     } catch (error) {
       throw new Error("Failed to get users");
-    }
-  }
-
-  static async getRoleIdByName(roleName) {
-    const query = "SELECT role_id FROM roles WHERE role_name = $1";
-    const values = [roleName];
-
-    try {
-      const { rows } = await pool.query(query, values);
-      if (rows.length === 0) {
-        throw new Error(`Role '${roleName}' not found`);
-      }
-      return rows[0].role_id;
-    } catch (error) {
-      throw new Error("Failed to get role");
     }
   }
 }

@@ -72,13 +72,6 @@ class Musician {
     }
   }
 
-  async getUser() {
-    if (this.userId) {
-      return User.getUserById(this.userId);
-    }
-    return null;
-  }
-
   static async getMusiciansByInstruments(instrumentIds) {
     const query = `
       SELECT musician.*
