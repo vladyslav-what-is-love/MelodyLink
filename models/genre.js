@@ -2,6 +2,7 @@ const pool = require("../db");
 
 class Genre {
   static async createGenre(genre) {
+    console.log("Received genre:", genre);
     const query = `
       INSERT INTO genre (genre)
       VALUES ($1)

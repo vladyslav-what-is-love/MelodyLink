@@ -4,10 +4,11 @@ const Genre = require("../models/genre");
 async function createGenre(req, res) {
   try {
     const { genre } = req.body;
+    console.log(req.body);
     const createdGenre = await Genre.createGenre(genre);
-    res.json(createdGenre);
+    res.status(201).json(createdGenre);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create genre" });
+    res.status(500).json({ error: "Unable to create genre" });
   }
 }
 
