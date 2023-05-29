@@ -13,12 +13,14 @@ const pool = require("./db");
 const genreRouter = require("./routes/genreRouter");
 const instrumentRouter = require("./routes/instrumentRouter");
 const organizerRouter = require("./routes/organizerRouter");
-const musicianRouter = require("./routers/musicianRouter");
+const musicianRouter = require("./routes/musicianRouter");
+const userRouter = require("./routes/userRouter");
 
 app.use("/genres", genreRouter);
 app.use("/instruments", instrumentRouter);
 app.use("/organizers", organizerRouter);
 app.use("/musicians", musicianRouter);
+app.use("/users", userRouter);
 
 // Обробка помилок
 app.use((err, req, res, next) => {

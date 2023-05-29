@@ -3,9 +3,9 @@ const Instrument = require("../models/instrument");
 // Контролер для створення інструмента
 async function createInstrument(req, res) {
   try {
-    const { instrument } = req.body;
     console.log(req.body);
     console.log(req.headers);
+    const { instrument } = req.body;
     const createdInstrument = await Instrument.createInstrument(instrument);
     res.status(201).json(createdInstrument);
   } catch (error) {
