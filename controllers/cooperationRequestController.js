@@ -1,6 +1,6 @@
 const pool = require("../db");
-const Musician = require("./musician");
-const Organizer = require("./organizer");
+//const Musician = require("./musician");
+//const Organizer = require("./organizer");
 
 class CooperationRequestController {
   static async createCooperationRequest(req, res) {

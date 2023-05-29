@@ -1,15 +1,21 @@
 const express = require("express");
+var bodyParser = require("body-parser");
 
 const app = express();
 
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 const port = 3000;
 
 // Підключення до бази даних
 const pool = require("./db");
 
-// Реєстрація маршрутів
+// Реєстрація маршруті
 const genreRouter = require("./routes/genreRouter");
 const instrumentRouter = require("./routes/instrumentRouter");
 const organizerRouter = require("./routes/organizerRouter");
@@ -23,6 +29,17 @@ app.use("/organizers", organizerRouter);
 app.use("/musicians", musicianRouter);
 app.use("/users", userRouter);
 app.use("/cooperation-requests", cooperationRequestRouter);
+
+/*app.post("/instruments", (req, res) => {
+  let data = req.body;
+  console.log(data);
+  res.send("Data Received: " + JSON.stringify(data));
+});
+
+app.post("/fuck", function (req, res) {
+  console.log(req.body); // populated!
+  res.send(200, req.body);
+});*/
 
 // Обробка помилок
 app.use((err, req, res, next) => {
