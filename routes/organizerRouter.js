@@ -17,4 +17,7 @@ router.delete("/:organizer_id", organizerController.deleteOrganizer);
 // Маршрут для пошуку організаторів за компанією
 router.get("/search", organizerController.searchOrganizersByCompany);
 
+// Маршрут для отримання всіх організаторів
+router.get("/", organizerController.getAllOrganizers);
+
 module.exports = router;

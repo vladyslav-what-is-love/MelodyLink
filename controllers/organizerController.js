@@ -70,10 +70,21 @@ const searchOrganizersByCompany = async (req, res) => {
   }
 };
 
+// Контролер для отримання всіх організаторів
+const getAllOrganizers = async (req, res) => {
+  try {
+    const organizers = await Organizer.getAllOrganizers();
+    res.json(organizers);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get organizers" });
+  }
+};
+
 module.exports = {
   createOrganizer,
   getOrganizerById,
   updateOrganizer,
   deleteOrganizer,
   searchOrganizersByCompany,
+  getAllOrganizers,
 };
