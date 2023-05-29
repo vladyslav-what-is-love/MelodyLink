@@ -25,17 +25,6 @@ class Instrument {
     }
   }
 
-  static async getAllInstruments() {
-    const query = "SELECT * FROM instrument";
-
-    try {
-      const { rows } = await pool.query(query);
-      return rows;
-    } catch (error) {
-      throw new Error("Failed to get instruments");
-    }
-  }
-
   static async deleteInstrument(instrumentId) {
     const query = `
       DELETE FROM instrument
@@ -47,6 +36,17 @@ class Instrument {
       await pool.query(query, values);
     } catch (error) {
       throw new Error("Failed to delete instrument");
+    }
+  }
+
+  static async getAllInstruments() {
+    const query = "SELECT * FROM instrument";
+
+    try {
+      const { rows } = await pool.query(query);
+      return rows;
+    } catch (error) {
+      throw new Error("Failed to get instruments");
     }
   }
 }
