@@ -35,16 +35,59 @@ class Musician {
     }
   }
 
-  static async updateMusician(musicianId, updates) {
-    const { user_id, experience } = updates;
-    const query =
-      "UPDATE musician SET user_id = $1, experience = $2 WHERE musician_id = $3 RETURNING *";
-    const values = [user_id, experience, musicianId];
+  static async updateMusician(musician_id, updates) {
+    const {
+      experience,
+      instrumentsToAddArray,
+      instrumentsToRemoveArray,
+      genresToAddArray,
+      genresToRemoveArray,
+    } = updates;
+
+    //console.log(updates);
 
     try {
+      await pool.query("BEGIN");
+
+      const query =
+        "UPDATE musician SET experience = $1 WHERE musician_id = $2 RETURNING *";
+      const values = [experience, musician_id];
+
       const { rows } = await pool.query(query, values);
-      return new Musician(rows[0]);
+
+      const updatedMusician = new Musician(rows[0]);
+
+      if (instrumentsToAddArray && instrumentsToAddArray.length > 0) {
+        await Musician.addInstrumentsToMusician(
+          musician_id,
+          instrumentsToAddArray
+        );
+      }
+
+      if (instrumentsToRemoveArray && instrumentsToRemoveArray.length > 0) {
+        await Musician.removeInstrumentsFromMusician(
+          musician_id,
+          instrumentsToRemoveArray
+        );
+      }
+
+      if (genresToAddArray && genresToAddArray.length > 0) {
+        await Musician.addGenresToMusician(musician_id, genresToAddArray);
+      }
+
+      if (genresToRemoveArray && genresToRemoveArray.length > 0) {
+        await Musician.removeGenresFromMusician(
+          musician_id,
+          genresToRemoveArray
+        );
+      }
+
+      await pool.query("COMMIT");
+
+      return updatedMusician;
     } catch (error) {
+      console.log(error);
+      await pool.query("ROLLBACK");
       throw new Error("Failed to update musician");
     }
   }
@@ -71,7 +114,7 @@ class Musician {
       const { rows } = await pool.query(query);
       console.log(rows);
       return rows.map((row) => ({
-        user: new User(row),
+        //user: new User(row),
         musician: new Musician(row),
       }));
     } catch (error) {
@@ -101,7 +144,7 @@ class Musician {
 
   static async getInstrumentsByMusicianId(musicianId) {
     const query = `
-      SELECT instrument.*
+      SELECT instrument.instrument_id, instrument.instrument
       FROM instrument
       INNER JOIN musician_instrument ON instrument.instrument_id = musician_instrument.instrument_id
       WHERE musician_instrument.musician_id = $1
@@ -110,6 +153,7 @@ class Musician {
 
     try {
       const { rows } = await pool.query(query, values);
+      console.log(rows);
       return rows.map((row) => new Instrument(row));
     } catch (error) {
       throw new Error("Failed to get instruments by musician ID");
@@ -149,6 +193,78 @@ class Musician {
       return rows.map((row) => new Genre(row));
     } catch (error) {
       throw new Error("Failed to get genres by musician ID");
+    }
+  }
+
+  static async addInstrumentsToMusician(musicianId, instrumentIds) {
+    try {
+      const placeholders = instrumentIds
+        .map((_, index) => `($1, $${index + 2})`)
+        .join(", ");
+
+      const query = `
+        INSERT INTO musician_instrument (musician_id, instrument_id)
+        VALUES ${placeholders}
+      `;
+
+      const values = [musicianId, ...instrumentIds];
+
+      await pool.query(query, values);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to add instruments to musician");
+    }
+  }
+
+  static async removeInstrumentsFromMusician(musicianId, instrumentIds) {
+    const query = `
+      DELETE FROM musician_instrument
+      WHERE musician_id = $1 AND instrument_id IN (${instrumentIds
+        .map((_, index) => `$${index + 2}`)
+        .join(", ")})
+    `;
+    const values = [musicianId, ...instrumentIds];
+
+    try {
+      await pool.query(query, values);
+    } catch (error) {
+      throw new Error("Failed to remove instruments from musician");
+    }
+  }
+
+  static async addGenresToMusician(musicianId, genreIds) {
+    try {
+      const placeholders = genreIds
+        .map((_, index) => `($1, $${index + 2})`)
+        .join(", ");
+
+      const query = `
+        INSERT INTO musician_genre (musician_id, genre_id)
+        VALUES ${placeholders}
+      `;
+
+      const values = [musicianId, ...genreIds];
+
+      await pool.query(query, values);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to add genres to musician");
+    }
+  }
+
+  static async removeGenresFromMusician(musicianId, genreIds) {
+    const query = `
+      DELETE FROM musician_genre
+      WHERE musician_id = $1 AND genre_id IN (${genreIds
+        .map((_, index) => `$${index + 2}`)
+        .join(", ")})
+    `;
+    const values = [musicianId, ...genreIds];
+
+    try {
+      await pool.query(query, values);
+    } catch (error) {
+      throw new Error("Failed to remove genres from musician");
     }
   }
 }

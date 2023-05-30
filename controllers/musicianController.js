@@ -1,4 +1,6 @@
 const Musician = require("../models/musician");
+const Instrument = require("../models/instrument");
+const Genre = require("../models/genre");
 
 // Контролер для створення музиканта
 const createMusician = async (req, res) => {
@@ -31,17 +33,56 @@ const getMusicianById = async (req, res) => {
 // Контролер для оновлення музиканта
 const updateMusician = async (req, res) => {
   const { musician_id } = req.params;
-  const { user_id, experience } = req.body;
+  //console.log(req.params);
+  const {
+    experience,
+    instrumentsToAdd,
+    instrumentsToRemove,
+    genresToAdd,
+    genresToRemove,
+  } = req.body;
 
+  //console.log(instrumentsToAdd);
+  var instrumentsToAddArray = instrumentsToAdd
+    .split(",")
+    .map((element) => parseInt(element.trim(), 10))
+    .filter((element) => !isNaN(element));
+  //console.log(instrumentsToRemove);
+  var instrumentsToRemoveArray = instrumentsToRemove
+    .split(",")
+    .map((element) => parseInt(element.trim(), 10))
+    .filter((element) => !isNaN(element));
+  var genresToAddArray = genresToAdd
+    .split(",")
+    .map((element) => parseInt(element.trim(), 10))
+    .filter((element) => !isNaN(element));
+  var genresToRemoveArray = genresToRemove
+    .split(",")
+    .map((element) => parseInt(element.trim(), 10))
+    .filter((element) => !isNaN(element));
   try {
-    const updates = { user_id, experience };
+    const updates = {
+      experience,
+      instrumentsToAddArray,
+      instrumentsToRemoveArray,
+      genresToAddArray,
+      genresToRemoveArray,
+    };
     const musician = await Musician.updateMusician(musician_id, updates);
+
     if (musician) {
-      res.json(musician);
+      const instruments = await Musician.getInstrumentsByMusicianId(
+        musician_id
+      );
+
+      const genres = await Musician.getGenresByMusicianId(musician_id);
+      console.log(res.instruments);
+      res.json({ musician, instruments, genres });
     } else {
       res.status(404).json({ error: "Musician not found" });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Failed to update musician" });
   }
 };

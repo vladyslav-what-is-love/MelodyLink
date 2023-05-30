@@ -1,6 +1,10 @@
 const pool = require("../db");
 
 class Instrument {
+  constructor(instrument_id, instrument) {
+    this.instrument_id = instrument_id;
+    this.instrument = instrument;
+  }
   static async createInstrument(instrumentName) {
     const query = "INSERT INTO instrument (instrument) VALUES ($1) RETURNING *";
     const values = [instrumentName];
