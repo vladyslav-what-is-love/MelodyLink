@@ -27,7 +27,8 @@
     <div class="login-form">
         <h1 class="text-center mb-4">Ласкаво просимо на сторінку входу</h1>
         <form id="login-form">
-            <button type="button" class="create-account-button">Створити акаунт</button>
+            <button type="button" class="create-account-button" onclick="redirectToCreateUser()">Створити
+                акаунт</button>
             <div class="mb-3">
                 <label for="phone-input" class="form-label">Телефон:</label>
                 <input type="text" id="phone-input" name="phone" class="form-control">
@@ -45,6 +46,9 @@
             // Додати маску для поля введення телефону
             $('#phone-input').inputmask({ mask: '+38(099)999-99-99' });
         });
+        function redirectToCreateUser() {
+            window.location.href = "createUser.html";
+        }
     </script>
 </body>
 
