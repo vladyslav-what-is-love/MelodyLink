@@ -2,6 +2,7 @@
 head {
   color: #eb1e1e;
 }
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -15,29 +16,35 @@ body {
 }
 
 /* Стилі для заголовків */
-h1 {
+h1,
+h2 {
   font-size: 24px;
   font-weight: bold;
 }
 
-h2 {
-  font-size: 20px;
-  font-weight: bold;
-}
-
 /* Стилі для кнопок */
-.button {
+.button,
+.btn-ellipse {
   display: inline-block;
   padding: 10px 20px;
+  transition: background-color 0.3s;
+}
+
+.button {
   background-color: #333;
   color: #fff;
   text-decoration: none;
   border-radius: 4px;
-  transition: background-color 0.3s;
 }
 
-.button:hover {
+.btn-ellipse {
+  border-radius: 20px;
+}
+
+.button:hover,
+.btn-ellipse:hover {
   background-color: #555;
+  color: #fff;
 }
 
 /* Стилі для форм */
@@ -87,4 +94,93 @@ h2 {
   color: #721c24;
 }
 
-/* Додайте більше стилів за потреби */
+/* Стилі для організаторів */
+.organizer-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.company {
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+}
+/* Стилі для організаторів */
+.organizer-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: center; /* Вирівнювання тексту по центру */
+}
+
+/* Стилі для кнопок організаторів і музикантів */
+.button-container {
+  display: flex;
+  justify-content: center; /* Вирівнювання кнопок по центру */
+  margin-top: 20px;
+}
+/* Стилі для організаторів */
+.organizer-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: center; /* Вирівнювання тексту по центру */
+}
+
+/* Стилі для кнопок організаторів і музикантів */
+.button-container {
+  display: flex;
+  justify-content: center; /* Вирівнювання кнопок по центру */
+  margin-top: 20px;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
+}
+/* Стилі для організаторів */
+.organizer-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: center; /* Вирівнювання тексту по центру */
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-right: 50%; /* Зміщення вліво на 20% */
+  text-align: center; /* Змінюємо вирівнювання на центр */
+}
+
+.company {
+  font-size: 14px;
+  color: #888;
+  margin-right: 50%; /* Зміщення вліво на 20% */
+  text-align: center; /* Змінюємо вирівнювання на центр */
+}
+
+/* Стилі для кнопок організаторів і музикантів */
+.button-container {
+  display: flex;
+  justify-content: center; /* Вирівнювання кнопок по центру */
+  margin-top: 20px;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
+}

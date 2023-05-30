@@ -3,36 +3,27 @@
 
 <head>
     <title>MelodyLink</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+
 </head>
 
 <body>
-    <h1>MelodyLink</h1>
+    <div class="container">
+        <h1>MelodyLink</h1>
 
-    <div id="musicians-list">
-        <!-- Сюди будуть додаватися музиканти з сервера -->
+        <div id="buttons" class="text-center mt-4">
+            <button id="musicians-button" class="btn btn-primary btn-ellipse">Музиканти</button>
+            <button id="organizers-button" class="btn btn-primary btn-ellipse">Організатори</button>
+        </div>
+
+        <div id="musicians-list" class="mt-3">
+            <!-- Сюди будуть додаватися музиканти з сервера -->
+        </div>
     </div>
 
-    <script>
-        // Виконайте AJAX-запит до сервера для отримання списку музикантів
-        fetch('/musicians')
-            .then(response => response.json())
-            .then(data => {
-                // Обробка отриманих даних
-                const musiciansList = document.getElementById('musicians-list');
-                data.forEach(item => {
-                    const musicianItem = document.createElement('div');
-                    musicianItem.innerHTML = item.musician.musicianId;
-                    musiciansList.appendChild(musicianItem);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    </script>
 
-
-
+    <script src="/public/js/main.js"></script>
 </body>
 
 </html>

@@ -114,7 +114,7 @@ class Musician {
       const { rows } = await pool.query(query);
       console.log(rows);
       return rows.map((row) => ({
-        /*user: new User({
+        user: new User({
           user_id: row.user_id,
           first_name: row.first_name,
           last_name: row.last_name,
@@ -126,7 +126,7 @@ class Musician {
           password: row.password,
           role_id: row.role_id,
           entity_type: row.entity_type,
-        }),*/
+        }),
         musician: new Musician({
           musician_id: row.musician_id,
           experience: row.experience,
