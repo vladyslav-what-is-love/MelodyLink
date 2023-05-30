@@ -53,4 +53,6 @@ router.get(
   CooperationRequestController.getRequestsByDate
 );
 
+router.get("/", CooperationRequestController.getAllCooperationRequests);
+
 module.exports = router;

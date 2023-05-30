@@ -133,6 +133,17 @@ class CooperationRequestController {
         .json({ error: "Failed to get cooperation requests by date" });
     }
   }
+
+  // Додайте цей метод до класу CooperationRequestController
+
+  static async getAllCooperationRequests(req, res) {
+    try {
+      const requests = await CooperationRequest.getAllCooperationRequests();
+      res.json(requests);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get all cooperation requests" });
+    }
+  }
 }
 
 module.exports = CooperationRequestController;

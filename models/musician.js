@@ -60,20 +60,6 @@ class Musician {
     }
   }
 
-  /*static async getAllMusicians() {
-    const query = `
-      SELECT u.*, m.*
-      FROM users u
-      JOIN musician m ON u.user_id = m.user_id
-      WHERE u.entity_type = 'musician'
-    `;
-    try {
-      const { rows } = await pool.query(query);
-      return rows.map((row) => new Musician(row));
-    } catch (error) {
-      throw new Error("Failed to get musicians");
-    }
-  }*/
   static async getAllMusicians() {
     const query = `
       SELECT u.*, m.*
@@ -85,10 +71,11 @@ class Musician {
       const { rows } = await pool.query(query);
       console.log(rows);
       return rows.map((row) => ({
-        //user: new User(row),
+        user: new User(row),
         musician: new Musician(row),
       }));
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to get musicians");
     }
   }

@@ -131,6 +131,51 @@ class CooperationRequest {
       throw new Error("Failed to get cooperation requests by date");
     }
   }
+  // Додайте цей статичний метод до класу CooperationRequest
+
+  static async getAllCooperationRequests() {
+    const query = `
+    SELECT cr.*, m.*, o.*
+    FROM cooperation_requests cr
+    JOIN musician m ON cr.musician_id = m.musician_id
+    JOIN organizers o ON cr.organizer_id = o.organizer_id
+  `;
+    try {
+      const { rows } = await pool.query(query);
+      return rows.map((row) => ({
+        cooperationRequest: new CooperationRequest(row),
+        musician: new Musician(row),
+        organizer: new Organizer(row),
+      }));
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get all cooperation requests");
+    }
+  }
+
+  /*static async getAllCooperationRequests() {
+    const query = `
+    SELECT cr.*, m.*, mu.*, o.*, u.*
+    FROM cooperation_requests cr
+    JOIN musician m ON cr.musician_id = m.musician_id
+    JOIN organizers o ON cr.organizer_id = o.organizer_id
+    JOIN users u ON u.user_id = m.user_id AND u.user_id = o.user_id
+    JOIN musician mu ON u.user_id = mu.user_id
+    `;
+    try {
+      const { rows } = await pool.query(query);
+      return rows.map((row) => ({
+        cooperationRequest: new CooperationRequest(row),
+        musician: new Musician(row),
+        organizer: new Organizer(row),
+        musicianUser: new User(row, "musician"), // Створення об'єкта користувача для музиканта
+        organizerUser: new User(row, "organizer"), // Створення об'єкта користувача для організатора
+      }));
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get all cooperation requests");
+    }
+  }*/
 }
 
 module.exports = CooperationRequest;
