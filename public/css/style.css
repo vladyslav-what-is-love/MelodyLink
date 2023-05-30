@@ -1,6 +1,8 @@
 /* Загальні стилі */
-head {
+.title {
   color: #eb1e1e;
+  display: inline-block;
+  vertical-align: middle; /* Вирівнювання по вертикалі */
 }
 
 body {
@@ -16,7 +18,7 @@ body {
 }
 
 /* Стилі для заголовків */
-h1,
+h1.title,
 h2 {
   font-size: 24px;
   font-weight: bold;
@@ -24,7 +26,8 @@ h2 {
 
 /* Стилі для кнопок */
 .button,
-.btn-ellipse {
+.btn-ellipse,
+.login-button {
   display: inline-block;
   padding: 10px 20px;
   transition: background-color 0.3s;
@@ -42,7 +45,8 @@ h2 {
 }
 
 .button:hover,
-.btn-ellipse:hover {
+.btn-ellipse:hover,
+.login-button:hover {
   background-color: #555;
   color: #fff;
 }
@@ -100,61 +104,6 @@ h2 {
   flex-direction: column;
   align-items: center;
   margin-bottom: 10px;
-}
-
-.name {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  text-align: center;
-}
-
-.company {
-  font-size: 14px;
-  color: #888;
-  text-align: center;
-}
-/* Стилі для організаторів */
-.organizer-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
-  text-align: center; /* Вирівнювання тексту по центру */
-}
-
-/* Стилі для кнопок організаторів і музикантів */
-.button-container {
-  display: flex;
-  justify-content: center; /* Вирівнювання кнопок по центру */
-  margin-top: 20px;
-}
-/* Стилі для організаторів */
-.organizer-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
-  text-align: center; /* Вирівнювання тексту по центру */
-}
-
-/* Стилі для кнопок організаторів і музикантів */
-.button-container {
-  display: flex;
-  justify-content: center; /* Вирівнювання кнопок по центру */
-  margin-top: 20px;
-}
-
-#buttons {
-  display: flex;
-  justify-content: center;
-}
-/* Стилі для організаторів */
-.organizer-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
   text-align: center; /* Вирівнювання тексту по центру */
 }
 
@@ -183,4 +132,104 @@ h2 {
 #buttons {
   display: flex;
   justify-content: center;
+}
+.login-button {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 14px;
+  vertical-align: middle; /* Вирівнювання по вертикалі */
+  margin-left: 10px; /* Доданий відступ від назви */
+}
+
+/* Стилі для музикантів */
+.musician-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.musician-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.musician-genre {
+  font-size: 14px;
+  color: #888;
+}
+
+.musician-button {
+  padding: 5px 10px;
+  background-color: #555;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.musician-button:hover {
+  background-color: #777;
+}
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  color: #eb1e1e;
+  margin-right: auto; /* Розтягуємо на всю доступну ширину справа */
+}
+
+.login-button {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+/* Стилі для написів на сторінці логіну */
+.login-form label {
+  display: block;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+/* Стилі для полів вводу на сторінці логіну */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 40%;
+  padding: 8px;
+  margin: 0 auto;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Стилі для кнопки "Увійти" на сторінці логіну */
+.login-form button.login-button {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-size: 16px;
+  width: 20%;
+  margin: 0 auto;
+  display: block;
+}
+.create-account-button {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }

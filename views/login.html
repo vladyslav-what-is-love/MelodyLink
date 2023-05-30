@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Сторінка логіну</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+    <script src="/public/js/main.js"></script>
+    <style>
+        .create-account-button {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">MelodyLink</h1>
+    </div>
+    <div class="login-form">
+        <h1 class="text-center mb-4">Ласкаво просимо на сторінку входу</h1>
+        <form id="login-form">
+            <button type="button" class="create-account-button">Створити акаунт</button>
+            <div class="mb-3">
+                <label for="phone-input" class="form-label">Телефон:</label>
+                <input type="text" id="phone-input" name="phone" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="password-input" class="form-label">Пароль:</label>
+                <input type="password" id="password-input" name="password" class="form-control">
+            </div>
+            <button type="submit" class="login-button">Увійти</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Додати маску для поля введення телефону
+            $('#phone-input').inputmask({ mask: '+38(099)999-99-99' });
+        });
+    </script>
+</body>
+
+</html>

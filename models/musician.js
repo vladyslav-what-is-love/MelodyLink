@@ -23,6 +23,42 @@ class Musician {
     }
   }
 
+  static async getAllMusicians() {
+    const query = `
+      SELECT u.*, m.*
+      FROM users u
+      JOIN musician m ON u.user_id = m.user_id
+      WHERE u.entity_type = 'musician'
+    `;
+    try {
+      const { rows } = await pool.query(query);
+      console.log(rows);
+      return rows.map((row) => ({
+        user: new User({
+          user_id: row.user_id,
+          first_name: row.first_name,
+          last_name: row.last_name,
+          email: row.email,
+          phone: row.phone,
+          rating: row.rating,
+          image: row.image,
+          location: row.location,
+          password: row.password,
+          role_id: row.role_id,
+          entity_type: row.entity_type,
+        }),
+        musician: new Musician({
+          musician_id: row.musician_id,
+          experience: row.experience,
+          user_id: row.user_id,
+        }),
+      }));
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get musicians");
+    }
+  }
+
   static async getMusicianById(musicianId) {
     const query = "SELECT * FROM musician WHERE musician_id = $1";
     const values = [musicianId];
@@ -100,42 +136,6 @@ class Musician {
       await pool.query(query, values);
     } catch (error) {
       throw new Error("Failed to delete musician");
-    }
-  }
-
-  static async getAllMusicians() {
-    const query = `
-      SELECT u.*, m.*
-      FROM users u
-      JOIN musician m ON u.user_id = m.user_id
-      WHERE u.entity_type = 'musician'
-    `;
-    try {
-      const { rows } = await pool.query(query);
-      console.log(rows);
-      return rows.map((row) => ({
-        user: new User({
-          user_id: row.user_id,
-          first_name: row.first_name,
-          last_name: row.last_name,
-          email: row.email,
-          phone: row.phone,
-          rating: row.rating,
-          image: row.image,
-          location: row.location,
-          password: row.password,
-          role_id: row.role_id,
-          entity_type: row.entity_type,
-        }),
-        musician: new Musician({
-          musician_id: row.musician_id,
-          experience: row.experience,
-          user_id: row.user_id,
-        }),
-      }));
-    } catch (error) {
-      console.log(error);
-      throw new Error("Failed to get musicians");
     }
   }
 
