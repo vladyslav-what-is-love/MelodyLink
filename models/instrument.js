@@ -1,9 +1,9 @@
 const pool = require("../db");
 
 class Instrument {
-  constructor(instrument_id, instrument) {
-    this.instrument_id = instrument_id;
-    this.instrument = instrument;
+  constructor(instrumentData) {
+    this.instrument_id = instrumentData.instrument_id;
+    this.instrument = instrumentData.instrument;
   }
   static async createInstrument(instrumentName) {
     const query = "INSERT INTO instrument (instrument) VALUES ($1) RETURNING *";

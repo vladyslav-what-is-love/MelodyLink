@@ -1,6 +1,10 @@
 const pool = require("../db");
 
 class Genre {
+  constructor(genreData) {
+    this.genre_id = genreData.genre_id;
+    this.genre = genreData.genre;
+  }
   static async createGenre(genre) {
     console.log("Received genre:", genre);
     const query = `

@@ -114,7 +114,7 @@ class Musician {
       const { rows } = await pool.query(query);
       console.log(rows);
       return rows.map((row) => ({
-        //user: new User(row),
+        user: new User(row),
         musician: new Musician(row),
       }));
     } catch (error) {
@@ -153,7 +153,7 @@ class Musician {
 
     try {
       const { rows } = await pool.query(query, values);
-      console.log(rows);
+      //console.log(rows);
       return rows.map((row) => new Instrument(row));
     } catch (error) {
       throw new Error("Failed to get instruments by musician ID");
@@ -190,6 +190,7 @@ class Musician {
 
     try {
       const { rows } = await pool.query(query, values);
+      console.log(rows);
       return rows.map((row) => new Genre(row));
     } catch (error) {
       throw new Error("Failed to get genres by musician ID");
