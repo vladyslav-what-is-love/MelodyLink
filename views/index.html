@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MelodyLink</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <h1>MelodyLink</h1>
+
+    <div id="musicians-list">
+        <!-- Сюди будуть додаватися музиканти з сервера -->
+    </div>
+
+    <script>
+        // Виконайте AJAX-запит до сервера для отримання списку музикантів
+        fetch('/musicians')
+            .then(response => response.json())
+            .then(data => {
+                // Обробка отриманих даних
+                const musiciansList = document.getElementById('musicians-list');
+                data.forEach(item => {
+                    const musicianItem = document.createElement('div');
+                    musicianItem.innerHTML = item.musician.musicianId;
+                    musiciansList.appendChild(musicianItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+
+
+
+</body>
+
+</html>

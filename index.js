@@ -1,5 +1,6 @@
 const express = require("express");
 var bodyParser = require("body-parser");
+const path = require("path");
 
 const app = express();
 
@@ -10,6 +11,10 @@ app.use(
   })
 );
 
+app.use(express.static(path.join(__dirname, "views")));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "index.html"));
+});
 const port = 3000;
 
 // Підключення до бази даних
