@@ -8,25 +8,41 @@
 
 </head>
 
+
 <body>
     <div class="container">
         <div class="header">
             <h1 class="title">MelodyLink</h1>
             <a class="login-button" href="login.html">Вхід</a>
-
         </div>
 
+        <div class="center-container">
+            <div id="buttons" class="text-center mt-4 d-flex justify-content-center">
+                <button id="musicians-button" class="btn btn-primary btn-ellipse">Музиканти</button>
+                <button id="organizers-button" class="btn btn-primary btn-ellipse">Організатори</button>
+            </div>
+        </div>
 
-
-
-        <div id="buttons" class="text-center mt-4">
-            <button id="musicians-button" class="btn btn-primary btn-ellipse">Музиканти</button>
-            <button id="organizers-button" class="btn btn-primary btn-ellipse">Організатори</button>
+        <div class="center-container">
+            <div id="city-filter" class="filter">
+                <span class="filter-label">Місто:</span>
+                <button class="filter-button" data-city="Київ">Київ</button>
+                <button class="filter-button" data-city="Львів">Львів</button>
+                <button class="filter-button" data-city="Харків">Харків</button>
+                <button class="filter-button" data-city="Одеса">Одеса</button>
+                <button class="filter-button" data-city="Дніпро">Дніпро</button>
+                <!-- Додайте інші міста як кнопки -->
+            </div>
         </div>
 
         <div id="musicians-list" class="mt-3">
             <!-- Сюди будуть додаватися музиканти з сервера -->
         </div>
+
+        <div id="organizers-list" class="mt-3">
+            <!-- Сюди будуть додаватися організатори з сервера -->
+        </div>
+
     </div>
 
     <script src="/public/js/main.js"></script>

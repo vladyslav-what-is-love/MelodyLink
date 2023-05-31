@@ -144,22 +144,48 @@ h2 {
 }
 
 /* Стилі для музикантів */
+.organizer-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: center; /* Вирівнювання тексту по центру */
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-right: 50%; /* Зміщення вліво на 20% */
+  text-align: center; /* Змінюємо вирівнювання на центр */
+}
+
+.company {
+  font-size: 14px;
+  color: #888;
+  margin-right: 50%; /* Зміщення вліво на 20% */
+  text-align: center; /* Змінюємо вирівнювання на центр */
+}
 .musician-row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .musician-name {
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 5px;
+  margin-right: 50%; /* Зміщення вліво на 20% */
+  text-align: center;
 }
-
-.musician-genre {
+#experience-id {
   font-size: 14px;
   color: #888;
+  margin-right: 50%; /* Зміщення вліво на 20% */
+  text-align: center;
 }
 
 .musician-button {
@@ -268,4 +294,46 @@ h2 {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 1rem;
+}
+.musician-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-right: 0%; /* Зміщення вліво на 20% */
+  text-align: center;
+  color: black;
+}
+.filter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 5px; /* Змініть це значення за необхідності */
+  flex-grow: 1;
+}
+
+.filter-label {
+  margin-right: 5px;
+}
+
+.filter-button {
+  margin-right: 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 50%;
+}
+
+.filter-button.active {
+  background-color: #ccc;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
 }

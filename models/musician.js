@@ -33,7 +33,8 @@ class Musician {
     try {
       const { rows } = await pool.query(query);
       console.log(rows);
-      return rows.map((row) => ({
+      return rows;
+      /*return rows.map((row) => ({
         user: new User({
           user_id: row.user_id,
           first_name: row.first_name,
@@ -52,7 +53,7 @@ class Musician {
           experience: row.experience,
           user_id: row.user_id,
         }),
-      }));
+      }));*/
     } catch (error) {
       console.log(error);
       throw new Error("Failed to get musicians");
