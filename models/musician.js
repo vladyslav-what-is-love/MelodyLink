@@ -32,7 +32,7 @@ class Musician {
     `;
     try {
       const { rows } = await pool.query(query);
-      console.log(rows);
+      //console.log(rows);
       return rows;
       /*return rows.map((row) => ({
         user: new User({

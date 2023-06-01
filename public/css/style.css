@@ -299,7 +299,7 @@ h2 {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 5px;
-  margin-right: 0%; /* Зміщення вліво на 20% */
+  margin-right: 0%;
   text-align: center;
   color: black;
 }
@@ -307,7 +307,7 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-right: 5px; /* Змініть це значення за необхідності */
+  margin-right: 5px;
   flex-grow: 1;
 }
 
@@ -333,7 +333,7 @@ h2 {
   justify-content: space-between;
 }
 
-.center-container {
+.button-container {
   display: flex;
   justify-content: center;
 }
@@ -345,4 +345,23 @@ h2 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+.filter {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap; /* Додали перемотку для рядка */
+}
+
+.filter-label {
+  margin-right: 10px;
+  margin-bottom: 5px; /* Додали відступ вниз */
+  margin-left: auto;
+}
+
+/* Додані стилі для вирівнювання жанрів по вертикалі */
+.filter-city {
+  margin-right: auto; /* Зсуваємо "Місто" вліво */
+  display: flex;
+  align-items: center;
 }

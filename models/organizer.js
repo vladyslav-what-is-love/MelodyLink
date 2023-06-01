@@ -90,11 +90,12 @@ class Organizer {
     `;
     try {
       const { rows } = await pool.query(query);
-      console.log(rows);
-      return rows.map((row) => ({
+      //console.log(rows);
+      return rows;
+      /*return rows.map((row) => ({
         user: new User(row),
         organizer: new Organizer(row),
-      }));
+      }));*/
     } catch (error) {
       throw new Error("Failed to get organizers");
     }

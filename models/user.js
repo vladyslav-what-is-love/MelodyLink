@@ -156,6 +156,18 @@ class User {
       throw new Error("Failed to get users");
     }
   }
+
+  static async getUserByLocation(location) {
+    const query = "SELECT * FROM users WHERE location = $1";
+    const values = [location];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      return rows.map((row) => new User(row));
+    } catch (error) {
+      throw new Error("Failed to get users by location");
+    }
+  }
 }
 
 module.exports = User;
