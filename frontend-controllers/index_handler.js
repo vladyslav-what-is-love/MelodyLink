@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
         filteredMusicians.forEach((item) => {
           const musicianItem = document.createElement("div");
           musicianItem.classList.add("musician-row");
-          musicianItem.setAttribute("id", "experience-id"); // Додати ідентифікатор до елементу musicianItem
+          musicianItem.setAttribute("id", item.user_id);
+          console.log(item.user_id); // Додати ідентифікатор до елементу musicianItem
           musicianItem.setAttribute("data-city", item.location); // Додати атрибут з містом
 
           const name = document.createElement("div");
@@ -48,6 +49,20 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error:", error);
       });
     fetch(`/musicians/genres?genre=${selectedGenre}`);
+  });
+
+  musiciansList.addEventListener("click", (event) => {
+    const musicianRow = event.target.closest(".musician-row");
+    if (musicianRow) {
+      const musicianId = musicianRow.getAttribute("id");
+      console.log(musicianId); // Отримати ідентифікатор музиканта
+      const musicianType = "musician"; // Тип користувача (в даному випадку - музикант)
+
+      // Формування посилання на сторінку профілю з використанням ідентифікатора та типу користувача
+      const profileLink = `/profile.html?id=${musicianId}&type=${musicianType}`;
+
+      window.location.href = profileLink; // Перенаправити на сторінку профілю з використанням посилання
+    }
   });
 
   organizersButton.addEventListener("click", () => {

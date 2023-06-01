@@ -21,7 +21,7 @@ app.use(
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
-const port = 3000;
+const port = 5000;
 
 // Підключення до бази даних
 const pool = require("./db");
