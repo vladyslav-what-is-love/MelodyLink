@@ -168,6 +168,30 @@ class User {
       throw new Error("Failed to get users by location");
     }
   }
+
+  static async login(phone, password) {
+    const query = `
+      SELECT users.user_id AS id, roles.role_name
+      FROM users
+      JOIN roles ON users.role_id = roles.role_id
+      WHERE users.phone = $1 AND users.password = $2
+    `;
+    const values = [phone, password];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      if (rows.length === 1) {
+        const { id, role_name } = rows[0];
+        console.log(rows[0]);
+        return { id, role_name }; // Повернення об'єкта з властивостями `id` та `role`
+      } else {
+        return null; // Повернення null, якщо користувача не знайдено або знайдено більше одного користувача зі співпадаючими полями
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to log in");
+    }
+  }
 }
 
 module.exports = User;

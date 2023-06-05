@@ -33,6 +33,7 @@ const organizerRouter = require("./routes/organizerRouter");
 const musicianRouter = require("./routes/musicianRouter");
 const userRouter = require("./routes/userRouter");
 const cooperationRequestRouter = require("./routes/cooperationRequestRouter");
+const loginRouter = require("./routes/loginRouter");
 
 app.use("/genres", genreRouter);
 app.use("/instruments", instrumentRouter);
@@ -40,6 +41,7 @@ app.use("/organizers", organizerRouter);
 app.use("/musicians", musicianRouter);
 app.use("/users", userRouter);
 app.use("/cooperationrequests", cooperationRequestRouter);
+app.use("/login", loginRouter);
 
 /*app.post("/instruments", (req, res) => {
   let data = req.body;

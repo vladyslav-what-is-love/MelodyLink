@@ -24,26 +24,29 @@ class CooperationRequestController {
 
   static async getCooperationRequestById(req, res) {
     try {
-      const { request_id } = req.params;
+      const { requestId } = req.params;
       const request = await CooperationRequest.getCooperationRequestById(
-        request_id
+        requestId
       );
       res.json(request);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error: "Failed to get cooperation request" });
     }
   }
 
   static async updateCooperationRequest(req, res) {
     try {
-      const { request_id } = req.params;
+      const { requestId } = req.params;
+      console.log(req.params);
       const updates = req.body;
       const updatedRequest = await CooperationRequest.updateCooperationRequest(
-        request_id,
+        requestId,
         updates
       );
       res.json(updatedRequest);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error: "Failed to update cooperation request" });
     }
   }
@@ -52,7 +55,7 @@ class CooperationRequestController {
     try {
       const { request_id } = req.params;
       await CooperationRequest.deleteCooperationRequest(request_id);
-      res.sendStatus(204);
+      res.json({ message: "Request deleted successfully" });
     } catch (error) {
       res.status(500).json({ error: "Failed to delete cooperation request" });
     }

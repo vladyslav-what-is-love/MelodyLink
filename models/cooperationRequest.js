@@ -40,11 +40,13 @@ class CooperationRequest {
       const requestData = rows[0];
       return new CooperationRequest(requestData);
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to get cooperation request");
     }
   }
 
   static async updateCooperationRequest(request_id, updates) {
+    console.log(request_id);
     const query =
       "UPDATE cooperation_requests SET musician_id = $1, organizer_id = $2, request_date = $3, status = $4 WHERE request_id = $5 RETURNING *";
     const { musician_id, organizer_id, request_date, status } = updates;
@@ -61,6 +63,7 @@ class CooperationRequest {
       const requestData = rows[0];
       return new CooperationRequest(requestData);
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to update cooperation request");
     }
   }

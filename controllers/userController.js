@@ -85,10 +85,28 @@ async function getAllUsers(req, res) {
   }
 }
 
+async function login(req, res) {
+  try {
+    const { phone, password } = req.body;
+
+    const user = await User.login(phone, password);
+
+    if (user) {
+      res.json({ id: user.id, role: user.role_name });
+    } else {
+      res.status(401).json({ error: "Invalid phone or password" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Unable to log in" });
+  }
+}
+
 module.exports = {
   createUser,
   getUserById,
   updateUser,
   deleteUser,
   getAllUsers,
+  login,
 };
