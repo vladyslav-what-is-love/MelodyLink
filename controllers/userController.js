@@ -30,6 +30,7 @@ async function createUser(req, res) {
 
     res.status(201).json(createdUser);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Unable to create user" });
   }
 }
