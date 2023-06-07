@@ -1,10 +1,17 @@
+const port = 5000;
 const express = require("express");
 const cors = require("cors");
 var bodyParser = require("body-parser");
 const path = require("path");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: `http://localhost:${port}`,
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -22,7 +29,6 @@ app.use(
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
-const port = 5000;
 
 // Підключення до бази даних
 const pool = require("./db");
