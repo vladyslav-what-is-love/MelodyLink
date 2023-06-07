@@ -89,6 +89,7 @@ async function login(req, res) {
   try {
     const { phone, password } = req.body;
 
+    console.log(req.body);
     const user = await User.login(phone, password);
 
     if (user) {
