@@ -12,6 +12,12 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", `http://localhost:${port}`);
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
+
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -19,7 +25,7 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, "views")));
+/*app.use(express.static(path.join(__dirname, "views")));
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(
   "/frontend-controllers",
@@ -29,7 +35,7 @@ app.use(
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
-
+*/
 // Підключення до бази даних
 const pool = require("./db");
 
