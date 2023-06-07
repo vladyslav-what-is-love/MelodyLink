@@ -33,7 +33,6 @@ const getMusicianById = async (req, res) => {
 // Контролер для оновлення музиканта
 const updateMusician = async (req, res) => {
   const { musician_id } = req.params;
-  //console.log(req.params);
   const {
     experience,
     instrumentsToAdd,
@@ -42,24 +41,34 @@ const updateMusician = async (req, res) => {
     genresToRemove,
   } = req.body;
 
-  //console.log(instrumentsToAdd);
-  var instrumentsToAddArray = instrumentsToAdd
-    .split(",")
-    .map((element) => parseInt(element.trim(), 10))
-    .filter((element) => !isNaN(element));
-  //console.log(instrumentsToRemove);
-  var instrumentsToRemoveArray = instrumentsToRemove
-    .split(",")
-    .map((element) => parseInt(element.trim(), 10))
-    .filter((element) => !isNaN(element));
-  var genresToAddArray = genresToAdd
-    .split(",")
-    .map((element) => parseInt(element.trim(), 10))
-    .filter((element) => !isNaN(element));
-  var genresToRemoveArray = genresToRemove
-    .split(",")
-    .map((element) => parseInt(element.trim(), 10))
-    .filter((element) => !isNaN(element));
+  const instrumentsToAddArray = instrumentsToAdd
+    ? instrumentsToAdd
+        .split(",")
+        .map((element) => parseInt(element.trim(), 10))
+        .filter((element) => !isNaN(element))
+    : [];
+
+  const instrumentsToRemoveArray = instrumentsToRemove
+    ? instrumentsToRemove
+        .split(",")
+        .map((element) => parseInt(element.trim(), 10))
+        .filter((element) => !isNaN(element))
+    : [];
+
+  const genresToAddArray = genresToAdd
+    ? genresToAdd
+        .split(",")
+        .map((element) => parseInt(element.trim(), 10))
+        .filter((element) => !isNaN(element))
+    : [];
+
+  const genresToRemoveArray = genresToRemove
+    ? genresToRemove
+        .split(",")
+        .map((element) => parseInt(element.trim(), 10))
+        .filter((element) => !isNaN(element))
+    : [];
+
   try {
     const updates = {
       experience,
@@ -76,7 +85,7 @@ const updateMusician = async (req, res) => {
       );
 
       const genres = await Musician.getGenresByMusicianId(musician_id);
-      console.log(res.instruments);
+
       res.json({ musician, instruments, genres });
     } else {
       res.status(404).json({ error: "Musician not found" });
