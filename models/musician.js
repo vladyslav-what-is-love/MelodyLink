@@ -75,7 +75,9 @@ class Musician {
     try {
       const { rows } = await pool.query(query);
       //console.log(rows);
+      console.log(rows);
       return rows;
+
       /*return rows.map((row) => ({
         user: new User({
           user_id: row.user_id,
@@ -308,7 +310,21 @@ class Musician {
 
     try {
       const { rows } = await pool.query(query, values);
-      return rows;
+
+      return rows.map((row) => ({
+        musician_id: row.musician_id,
+        user_id: row.user_id,
+        experience: row.experience,
+        firstName: row.first_name,
+        lastName: row.last_name,
+        email: row.email,
+        phone: row.phone,
+        rating: row.rating,
+        image: row.image,
+        location: row.location,
+        entity_type: row.entity_type,
+        role_id: row.role_id,
+      }));
     } catch (error) {
       console.log(error);
       throw new Error("Failed to get musicians by instruments");
@@ -329,7 +345,20 @@ class Musician {
 
     try {
       const { rows } = await pool.query(query, values);
-      return rows;
+      return rows.map((row) => ({
+        musician_id: row.musician_id,
+        user_id: row.user_id,
+        experience: row.experience,
+        firstName: row.first_name,
+        lastName: row.last_name,
+        email: row.email,
+        phone: row.phone,
+        rating: row.rating,
+        image: row.image,
+        location: row.location,
+        entity_type: row.entity_type,
+        role_id: row.role_id,
+      }));
     } catch (error) {
       console.log(error);
       throw new Error("Failed to get musicians by genres");
