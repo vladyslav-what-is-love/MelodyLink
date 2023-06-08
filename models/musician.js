@@ -296,9 +296,10 @@ class Musician {
 
   static async getMusiciansByInstruments(instrumentIds) {
     const query = `
-      SELECT musician.*
+      SELECT musician.*, users.*
       FROM musician
       INNER JOIN musician_instrument ON musician.musician_id = musician_instrument.musician_id
+      INNER JOIN users ON musician.user_id = users.user_id
       WHERE musician_instrument.instrument_id IN (${instrumentIds
         .map((_, index) => `$${index + 1}`)
         .join(", ")})
@@ -307,26 +308,28 @@ class Musician {
 
     try {
       const { rows } = await pool.query(query, values);
-      return rows.map((row) => new Musician(row));
+      return rows;
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to get musicians by instruments");
     }
   }
 
   static async getMusiciansByGenres(genreIds) {
     const query = `
-    SELECT musician.*
-    FROM musician
-    INNER JOIN musician_genre ON musician.musician_id = musician_genre.musician_id
-    WHERE musician_genre.genre_id IN (${genreIds
-      .map((_, index) => `$${index + 1}`)
-      .join(", ")})
-  `;
+      SELECT musician.*, users.*
+      FROM musician
+      INNER JOIN musician_genre ON musician.musician_id = musician_genre.musician_id
+      INNER JOIN users ON musician.user_id = users.user_id
+      WHERE musician_genre.genre_id IN (${genreIds
+        .map((_, index) => `$${index + 1}`)
+        .join(", ")})
+    `;
     const values = genreIds;
 
     try {
       const { rows } = await pool.query(query, values);
-      return rows.map((row) => new Musician(row));
+      return rows;
     } catch (error) {
       console.log(error);
       throw new Error("Failed to get musicians by genres");
