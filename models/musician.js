@@ -23,6 +23,29 @@ class Musician {
     }
   }
 
+  static async getUserByMusicianId(musicianId) {
+    const query = `
+      SELECT *
+      FROM users
+      WHERE user_id = (
+        SELECT user_id
+        FROM musician
+        WHERE musician_id = $1
+      )
+    `;
+    const values = [musicianId];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      if (rows.length === 0) {
+        return null;
+      }
+      return new User(rows[0]);
+    } catch (error) {
+      throw new Error("Failed to get user by musician ID");
+    }
+  }
+
   static async getMusicianByUserId(userId) {
     const query = `
       SELECT *

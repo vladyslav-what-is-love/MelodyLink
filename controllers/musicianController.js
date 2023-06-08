@@ -1,6 +1,7 @@
 const Musician = require("../models/musician");
 const Instrument = require("../models/instrument");
 const Genre = require("../models/genre");
+const User = require("../models/user");
 
 // Контролер для створення музиканта
 const createMusician = async (req, res) => {
@@ -22,7 +23,17 @@ const getMusicianById = async (req, res) => {
   try {
     const musician = await Musician.getMusicianById(musician_id);
     if (musician) {
-      res.json(musician);
+      const genres = await Musician.getGenresByMusicianId(musician_id);
+      const instruments = await Musician.getInstrumentsByMusicianId(
+        musician_id
+      );
+      const musicianWithDetails = {
+        experience: musician.experience,
+        // Додайте інші властивості музиканта, які вам потрібні
+        genres,
+        instruments,
+      };
+      res.json(musicianWithDetails);
     } else {
       res.status(404).json({ error: "Musician not found" });
     }
@@ -113,7 +124,37 @@ const deleteMusician = async (req, res) => {
 const getAllMusicians = async (req, res) => {
   try {
     const musicians = await Musician.getAllMusicians();
-    res.json(musicians);
+
+    const musiciansWithDetails = await Promise.all(
+      musicians.map(async (musician) => {
+        const genres = await Musician.getGenresByMusicianId(
+          musician.musician_id
+        );
+        const instruments = await Musician.getInstrumentsByMusicianId(
+          musician.musician_id
+        );
+        const user = await User.getUserById(musician.user_id);
+
+        return {
+          experience: musician.experience,
+          userId: user.userId,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          phone: user.phone,
+          rating: user.rating,
+          image: user.image,
+          location: user.location,
+          roleId: user.roleId,
+          entityType: user.entityType,
+          //user,
+          genres,
+          instruments,
+        };
+      })
+    );
+
+    res.json(musiciansWithDetails);
   } catch (error) {
     res.status(500).json({ error: "Failed to get musicians" });
   }
