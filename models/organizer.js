@@ -131,17 +131,43 @@ class Organizer {
   static async getOrganizerCooperationRequests(organizer_id) {
     console.log(organizer_id);
     const query = `
-      SELECT cr.*, m.*, u.*
-      FROM cooperation_requests cr
-      JOIN musician m ON cr.musician_id = m.musician_id
-      JOIN users u ON m.user_id = u.user_id
-      WHERE cr.organizer_id = $1
-    `;
+  SELECT cr.request_id, cr.musician_id, cr.organizer_id, cr.request_date, cr.status,
+         m.*, u.*, array_agg(i.instrument) AS instruments, array_agg(g.genre) AS genres
+  FROM cooperation_requests cr
+  JOIN musician m ON cr.musician_id = m.musician_id
+  JOIN users u ON m.user_id = u.user_id
+  LEFT JOIN musician_instrument mi ON m.musician_id = mi.musician_id
+  LEFT JOIN instrument i ON mi.instrument_id = i.instrument_id
+  LEFT JOIN musician_genre mg ON m.musician_id = mg.musician_id
+  LEFT JOIN genre g ON mg.genre_id = g.genre_id
+  WHERE cr.organizer_id = $1
+  GROUP BY cr.request_id, cr.musician_id, cr.organizer_id, cr.request_date, cr.status, m.musician_id, u.user_id
+`;
     const values = [organizer_id];
 
     try {
       const { rows } = await pool.query(query, values);
-      return rows;
+      return rows.map((row) => ({
+        request_id: row.request_id,
+        organizer_id: row.organizer_id,
+        request_date: row.request_date,
+        status: row.status,
+        musician_id: row.musician_id,
+        user_id: row.user_id,
+        experience: row.experience,
+        firstName: row.first_name,
+        lastName: row.last_name,
+        email: row.email,
+        phone: row.phone,
+        rating: row.rating,
+        image: row.image,
+        location: row.location,
+        entity_type: row.entity_type,
+        role_id: row.role_id,
+        instruments: row.instruments,
+        genres: row.genres,
+      }));
+      //return rows;
     } catch (error) {
       console.log(error);
       throw new Error("Failed to get all cooperation requests for organizer");
