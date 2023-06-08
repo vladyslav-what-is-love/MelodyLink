@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 var bodyParser = require("body-parser");
-const path = require("path");
 
 const app = express();
 app.use(cors());
@@ -17,17 +16,6 @@ app.use(
   })
 );
 
-/*app.use(express.static(path.join(__dirname, "views")));
-app.use("/public", express.static(path.join(__dirname, "public")));
-app.use(
-  "/frontend-controllers",
-  express.static(path.join(__dirname, "frontend-controllers"))
-);
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "index.html"));
-});
-*/
 // Підключення до бази даних
 const pool = require("./db");
 
@@ -47,18 +35,6 @@ app.use("/musicians", musicianRouter);
 app.use("/users", userRouter);
 app.use("/cooperationrequests", cooperationRequestRouter);
 app.use("/login", loginRouter);
-
-/*app.post("/instruments", (req, res) => {
-  let data = req.body;
-  console.log(data);
-  res.send("Data Received: " + JSON.stringify(data));
-});
-const port = 5450;
-
-app.post("/fuck", function (req, res) {
-  console.log(req.body); // populated!
-  res.send(200, req.body);
-});*/
 
 // Обробка помилок
 app.use((err, req, res, next) => {
