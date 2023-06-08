@@ -291,20 +291,22 @@ class Musician {
   }
 
   static async getMusiciansByGenres(genreIds) {
+    console.log(genreIds);
     const query = `
-      SELECT musician.*
-      FROM musician
-      INNER JOIN musician_genre ON musician.musician_id = musician_genre.musician_id
-      WHERE musician_genre.genre_id IN (${genreIds
-        .map((_, index) => `$${index + 1}`)
-        .join(", ")})
-    `;
+    SELECT musician.*
+    FROM musician
+    INNER JOIN musician_genre ON musician.musician_id = musician_genre.musician_id
+    WHERE musician_genre.genre_id IN (${genreIds
+      .map((id) => parseInt(id, 10))
+      .join(", ")})
+  `;
     const values = genreIds;
 
     try {
       const { rows } = await pool.query(query, values);
       return rows.map((row) => new Musician(row));
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to get musicians by genres");
     }
   }

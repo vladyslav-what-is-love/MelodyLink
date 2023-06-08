@@ -146,10 +146,12 @@ const getInstrumentsByMusicianId = async (req, res) => {
 const getMusiciansByGenres = async (req, res) => {
   const { genreIds } = req.query;
 
+  console.log(genreIds);
   try {
     const musicians = await Musician.getMusiciansByGenres(genreIds);
     res.json(musicians);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Failed to get musicians by genres" });
   }
 };

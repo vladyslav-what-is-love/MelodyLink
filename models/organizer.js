@@ -91,10 +91,7 @@ class Organizer {
 
     try {
       const { rows } = await pool.query(query, values);
-      return rows.map((row) => ({
-        organizer: new Organizer(row),
-        user: new User(row),
-      }));
+      return rows;
     } catch (error) {
       throw new Error("Failed to search organizers by company");
     }
