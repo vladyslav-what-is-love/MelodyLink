@@ -9,7 +9,11 @@ const pool = new Pool({
 });
 
 module.exports = pool;
-/*async function testDatabaseConnection() {
+/*
+
+  //Для створення напряму
+
+  async function testDatabaseConnection() {
   try {
     // Підключення до бази даних
     await pool.connect();
@@ -36,4 +40,5 @@ module.exports = pool;
 }
 
 // Виклик функції для перевірки підключення та створення жанру
+
 testDatabaseConnection();*/

@@ -74,8 +74,6 @@ class Musician {
     `;
     try {
       const { rows } = await pool.query(query);
-      //console.log(rows);
-      console.log(rows);
       return rows;
 
       /*return rows.map((row) => ({
@@ -116,67 +114,9 @@ class Musician {
     }
   }
 
-  /*static async updateMusician(musician_id, updates) {
-    const {
-      experience,
-      instrumentsToAddArray,
-      instrumentsToRemoveArray,
-      genresToAddArray,
-      genresToRemoveArray,
-    } = updates;
-
-    //console.log(updates);
-
-    try {
-      await pool.query("BEGIN");
-
-      const query =
-        "UPDATE musician SET experience = $1 WHERE musician_id = $2 RETURNING *";
-      const values = [experience, musician_id];
-
-      const { rows } = await pool.query(query, values);
-
-      const updatedMusician = new Musician(rows[0]);
-
-      if (instrumentsToAddArray && instrumentsToAddArray.length > 0) {
-        await Musician.addInstrumentsToMusician(
-          musician_id,
-          instrumentsToAddArray
-        );
-      }
-
-      if (instrumentsToRemoveArray && instrumentsToRemoveArray.length > 0) {
-        await Musician.removeInstrumentsFromMusician(
-          musician_id,
-          instrumentsToRemoveArray
-        );
-      }
-
-      if (genresToAddArray && genresToAddArray.length > 0) {
-        await Musician.addGenresToMusician(musician_id, genresToAddArray);
-      }
-
-      if (genresToRemoveArray && genresToRemoveArray.length > 0) {
-        await Musician.removeGenresFromMusician(
-          musician_id,
-          genresToRemoveArray
-        );
-      }
-
-      await pool.query("COMMIT");
-
-      return updatedMusician;
-    } catch (error) {
-      console.log(error);
-      await pool.query("ROLLBACK");
-      throw new Error("Failed to update musician");
-    }
-  }*/
-
   static async updateMusician(musicianId, updates) {
     const { experience, genres, instruments } = updates;
 
-    //console.log(genres);
     try {
       await pool.query("BEGIN");
 
@@ -236,17 +176,14 @@ class Musician {
         for (let i = 0; i < genres.length; i++) {
           new_genres.push(Number(genres[i]));
         }
-        //console.log(new_genres);
 
         const genresToAdd = new_genres.filter(
           (genre) => !existingGenreIds.includes(genre)
         );
 
-        //console.log(genresToAdd);
         const genresToRemove = existingGenreIds.filter(
           (existingGenre) => !new_genres.includes(existingGenre)
         );
-        //console.log(genresToRemove);
 
         if (genresToAdd.length > 0) {
           await Musician.addGenresToMusician(musicianId, genresToAdd);
@@ -289,7 +226,6 @@ class Musician {
 
     try {
       const { rows } = await pool.query(query, values);
-      //console.log(rows);
       return rows.map((row) => new Instrument(row));
     } catch (error) {
       throw new Error("Failed to get instruments by musician ID");
@@ -376,7 +312,6 @@ class Musician {
 
     try {
       const { rows } = await pool.query(query, values);
-      console.log(rows);
       return rows.map((row) => new Genre(row));
     } catch (error) {
       throw new Error("Failed to get genres by musician ID");

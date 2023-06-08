@@ -8,7 +8,6 @@ class CooperationRequestController {
   static async createCooperationRequest(req, res) {
     try {
       const { musician_id, organizer_id, request_date, status } = req.body;
-      console.log(req.body);
       const createdRequest = await CooperationRequest.createCooperationRequest(
         musician_id,
         organizer_id,
@@ -38,7 +37,6 @@ class CooperationRequestController {
   static async updateCooperationRequest(req, res) {
     try {
       const { requestId } = req.params;
-      console.log(req.params);
       const updates = req.body;
       const updatedRequest = await CooperationRequest.updateCooperationRequest(
         requestId,
@@ -136,8 +134,6 @@ class CooperationRequestController {
         .json({ error: "Failed to get cooperation requests by date" });
     }
   }
-
-  // Додайте цей метод до класу CooperationRequestController
 
   static async getAllCooperationRequests(req, res) {
     try {

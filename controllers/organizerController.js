@@ -62,7 +62,6 @@ const deleteOrganizer = async (req, res) => {
 const searchOrganizersByCompany = async (req, res) => {
   const { company } = req.query;
 
-  console.log(req.query);
   try {
     const organizers = await Organizer.searchOrganizersByCompany(company);
     res.json(organizers);
@@ -92,9 +91,6 @@ const getAllCompanies = async (req, res) => {
 };
 
 const getOrganizerCooperationRequests = async (req, res) => {
-  //const organizerId = req.query.organizerId;
-
-  //onsole.log(req.query);
   const { organizerId } = req.params;
   try {
     const cooperationRequests = await Organizer.getOrganizerCooperationRequests(

@@ -82,49 +82,6 @@ class User {
     }
   }
 
-  /*static async updateUser(userId, updates) {
-    const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      rating,
-      image,
-      location,
-      password,
-      roleName,
-      entityType,
-    } = updates;
-    const roleId = await this.getRoleIdByName(roleName);
-
-    const query = `
-      UPDATE users
-      SET first_name = $1, last_name = $2, email = $3, phone = $4, rating = $5, image = $6, location = $7, password = $8, role_id = $9, entity_type = $10
-      WHERE user_id = $11
-      RETURNING *
-    `;
-    const values = [
-      firstName,
-      lastName,
-      email,
-      phone,
-      rating,
-      image,
-      location,
-      password,
-      roleId,
-      entityType,
-      userId,
-    ];
-
-    try {
-      const { rows } = await pool.query(query, values);
-      return new User(rows[0]);
-    } catch (error) {
-      throw new Error("Failed to update user");
-    }
-  }*/
-
   static async updateUser(userId, updates) {
     const {
       firstName,
@@ -142,7 +99,6 @@ class User {
       instruments,
     } = updates;
     console.log(updates.company);
-    //console.log(genres);
 
     /*if (roleName) {
       const roleId = await this.getRoleIdByName(roleName);
@@ -200,20 +156,16 @@ class User {
     try {
       const { rows } = await pool.query(query, values);
       const updatedUser = new User(rows[0]);
-      //console.log(updatedUser.entityType);
       if (updatedUser.entityType === "musician" && musicianUpdates) {
         const musician = await Musician.getMusicianByUserId(userId);
-        //console.log(musician);
         if (musician) {
           await Musician.updateMusician(musician.musicianId, musicianUpdates);
         }
       }
 
-      //console.log(updatedUser.entityType);
       if (updatedUser.entityType === "organizer") {
         const organizer = await Organizer.getNiceOrganizerByUserId(userId);
         if (organizer) {
-          console.log(updates.company);
           await Organizer.updateOrganizer(organizer.organizer_id, {
             user_id: userId,
             company: company || organizer.company,
@@ -230,19 +182,16 @@ class User {
 
   static async deleteUser(userId) {
     try {
-      // Перевіряємо, чи користувач є музикантом
       const musician = await Musician.getMusicianByUserId(userId);
       if (musician) {
         await Musician.deleteMusician(musician.musician_id);
       }
 
-      // Перевіряємо, чи користувач є організатором
       const organizer = await Organizer.getOrganizerByUserId(userId);
       if (organizer) {
         await Organizer.deleteOrganizer(organizer.organizer_id);
       }
 
-      // Видаляємо користувача
       const query = "DELETE FROM users WHERE user_id = $1";
       const values = [userId];
       await pool.query(query, values);
@@ -288,9 +237,7 @@ class User {
       const { rows } = await pool.query(query, values);
       if (rows.length === 1) {
         const { id, role_name, musician_id, organizer_id } = rows[0];
-        //console.log(rows[0]);
 
-        //let entityId;
         if (musician_id) {
           return { id, role_name, musician_id };
         } else if (organizer_id) {
@@ -298,9 +245,6 @@ class User {
         } else {
           return null;
         }
-
-        //console.log({ id, role_name, entityId });
-        //return { id, role_name, entityId };
       } else {
         return null;
       }

@@ -1,6 +1,4 @@
 const Musician = require("../models/musician");
-const Instrument = require("../models/instrument");
-const Genre = require("../models/genre");
 const User = require("../models/user");
 
 // Контролер для створення музиканта
@@ -19,7 +17,6 @@ const createMusician = async (req, res) => {
 const getMusicianById = async (req, res) => {
   const { musician_id } = req.params;
 
-  console.log(musician_id);
   try {
     const musician = await Musician.getMusicianById(musician_id);
     if (musician) {
@@ -29,7 +26,6 @@ const getMusicianById = async (req, res) => {
       );
       const musicianWithDetails = {
         experience: musician.experience,
-        // Додайте інші властивості музиканта, які вам потрібні
         genres,
         instruments,
       };
@@ -147,7 +143,6 @@ const getAllMusicians = async (req, res) => {
           location: user.location,
           roleId: user.roleId,
           entityType: user.entityType,
-          //user,
           genres,
           instruments,
         };
@@ -186,6 +181,7 @@ const getMusiciansByInstruments = async (req, res) => {
     res.status(500).json({ error: "Failed to get musicians by instruments" });
   }
 };
+
 // Контролер для пошуку музикантів за жанрами
 const getMusiciansByGenres = async (req, res) => {
   const { genreIds } = req.query;
@@ -194,7 +190,6 @@ const getMusiciansByGenres = async (req, res) => {
 
   const ids = parsedIds.map((id) => parseInt(id));
 
-  console.log(ids);
   try {
     const musicians = await Musician.getMusiciansByGenres(ids);
     res.json(musicians);
