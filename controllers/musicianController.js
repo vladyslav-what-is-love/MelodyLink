@@ -18,6 +18,7 @@ const createMusician = async (req, res) => {
 const getMusicianById = async (req, res) => {
   const { musician_id } = req.params;
 
+  console.log(musician_id);
   try {
     const musician = await Musician.getMusicianById(musician_id);
     if (musician) {

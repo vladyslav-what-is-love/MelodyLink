@@ -101,8 +101,7 @@ async function login(req, res) {
         role: user.role_name,
         musician_id: user.musician_id,
       });
-    }
-    if (user.organizer_id) {
+    } else if (user.organizer_id) {
       res.json({
         id: user.id,
         role: user.role_name,
