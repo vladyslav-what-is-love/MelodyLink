@@ -23,6 +23,25 @@ class Musician {
     }
   }
 
+  static async getMusicianByUserId(userId) {
+    const query = `
+      SELECT *
+      FROM musician
+      WHERE user_id = $1
+    `;
+    const values = [userId];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      if (rows.length === 0) {
+        return null;
+      }
+      return new Musician(rows[0]);
+    } catch (error) {
+      throw new Error("Failed to get musician by user ID");
+    }
+  }
+
   static async getAllMusicians() {
     const query = `
       SELECT u.*, m.*
@@ -72,7 +91,7 @@ class Musician {
     }
   }
 
-  static async updateMusician(musician_id, updates) {
+  /*static async updateMusician(musician_id, updates) {
     const {
       experience,
       instrumentsToAddArray,
@@ -125,6 +144,100 @@ class Musician {
     } catch (error) {
       console.log(error);
       await pool.query("ROLLBACK");
+      throw new Error("Failed to update musician");
+    }
+  }*/
+
+  static async updateMusician(musicianId, updates) {
+    const { experience, genres, instruments } = updates;
+
+    //console.log(genres);
+    try {
+      await pool.query("BEGIN");
+
+      const query = `
+        UPDATE musician
+        SET experience = COALESCE($1, experience)
+        WHERE musician_id = $2
+        RETURNING *
+      `;
+
+      const values = [experience, musicianId];
+
+      const { rows } = await pool.query(query, values);
+
+      const updatedMusician = new Musician(rows[0]);
+
+      if (Array.isArray(instruments) && instruments.length > 0) {
+        const existingInstruments = await Musician.getInstrumentsByMusicianId(
+          musicianId
+        );
+
+        const existingInstrumentIds = existingInstruments.map(
+          (instrument) => instrument.instrument_id
+        );
+
+        const new_instruments = [];
+        for (let i = 0; i < instruments.length; i++) {
+          new_instruments.push(Number(instruments[i]));
+        }
+
+        const instrumentsToAdd = new_instruments.filter(
+          (instrument) => !existingInstrumentIds.includes(instrument)
+        );
+
+        const instrumentsToRemove = existingInstrumentIds.filter(
+          (instrument) => !new_instruments.includes(instrument)
+        );
+
+        if (instrumentsToAdd.length > 0) {
+          await Musician.addInstrumentsToMusician(musicianId, instrumentsToAdd);
+        }
+
+        if (instrumentsToRemove.length > 0) {
+          await Musician.removeInstrumentsFromMusician(
+            musicianId,
+            instrumentsToRemove
+          );
+        }
+      }
+
+      if (Array.isArray(genres) && genres.length > 0) {
+        const existingGenres = await Musician.getGenresByMusicianId(musicianId);
+
+        const existingGenreIds = existingGenres.map((genre) => genre.genre_id);
+
+        const new_genres = [];
+        for (let i = 0; i < genres.length; i++) {
+          new_genres.push(Number(genres[i]));
+        }
+        //console.log(new_genres);
+
+        const genresToAdd = new_genres.filter(
+          (genre) => !existingGenreIds.includes(genre)
+        );
+
+        //console.log(genresToAdd);
+        const genresToRemove = existingGenreIds.filter(
+          (existingGenre) => !new_genres.includes(existingGenre)
+        );
+        //console.log(genresToRemove);
+
+        if (genresToAdd.length > 0) {
+          await Musician.addGenresToMusician(musicianId, genresToAdd);
+        }
+
+        if (genresToRemove.length > 0) {
+          await Musician.removeGenresFromMusician(musicianId, genresToRemove);
+        }
+      }
+
+      await pool.query("COMMIT");
+
+      return updatedMusician;
+    } catch (error) {
+      await pool.query("ROLLBACK");
+      console.log(error);
       throw new Error("Failed to update musician");
     }
   }

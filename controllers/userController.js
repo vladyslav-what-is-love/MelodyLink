@@ -56,10 +56,12 @@ async function updateUser(req, res) {
     const { userId } = req.params;
     const updates = req.body;
 
+    //console.log(req.body);
     const updatedUser = await User.updateUser(userId, updates);
 
     res.json(updatedUser);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Unable to update user" });
   }
 }

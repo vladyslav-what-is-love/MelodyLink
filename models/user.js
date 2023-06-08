@@ -1,5 +1,6 @@
 const pool = require("../db");
 const Musician = require("./musician");
+const Organizer = require("./organizer");
 
 class User {
   constructor(userData) {
@@ -81,7 +82,7 @@ class User {
     }
   }
 
-  static async updateUser(userId, updates) {
+  /*static async updateUser(userId, updates) {
     const {
       firstName,
       lastName,
@@ -120,6 +121,128 @@ class User {
       const { rows } = await pool.query(query, values);
       return new User(rows[0]);
     } catch (error) {
+      throw new Error("Failed to update user");
+    }
+  }*/
+
+  static async updateUser(userId, updates) {
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      rating,
+      image,
+      location,
+      password,
+      roleName,
+      entityType,
+      company,
+      genres,
+      instruments,
+    } = updates;
+    //console.log(genres);
+
+    /*if (roleName) {
+      const roleId = await this.getRoleIdByName(roleName);
+    } else {
+      roleId = 2;
+    }
+    //const roleId = await this.getRoleIdByName(roleName);*/
+    const roleId = 2;
+    const query = `
+      UPDATE users
+      SET
+        first_name = COALESCE($1, first_name),
+        last_name = COALESCE($2, last_name),
+        email = COALESCE($3, email),
+        phone = COALESCE($4, phone),
+        rating = COALESCE($5, rating),
+        image = COALESCE($6, image),
+        location = COALESCE($7, location),
+        password = COALESCE($8, password),
+        role_id = COALESCE($9, role_id),
+        entity_type = COALESCE($10, entity_type)
+      WHERE user_id = $11
+      RETURNING *
+    `;
+    const values = [
+      firstName,
+      lastName,
+      email,
+      phone,
+      rating,
+      image,
+      location,
+      password,
+      roleId,
+      entityType,
+      userId,
+    ];
+    //console.log(updates.genres);
+
+    /*const musicianUpdates = {};
+
+    if (updates.experience) {
+      musicianUpdates.experience = updates.experience;
+    }
+
+    if (Array.isArray(updates.genres) && updates.genres.length > 0) {
+      musicianUpdates.genres = updates.genres;
+    }
+
+    if (Array.isArray(updates.instruments) && updates.instruments.length > 0) {
+      musicianUpdates.instruments = updates.instruments;
+    }
+
+    //console.log(updates.genres);
+    if (genres || instruments) {
+      musicianUpdates.experience = updates.experience || null;
+      musicianUpdates.genres = genres || [];
+      musicianUpdates.instruments = instruments || [];
+    }*/
+
+    const musicianUpdates = {};
+    if (updates.experience) {
+      musicianUpdates.experience = updates.experience;
+    }
+
+    if (Array.isArray(genres) && genres.length > 0) {
+      const genreIds = genres.map((genre) => genre.genre_id);
+      musicianUpdates.genres = genreIds;
+    }
+
+    if (Array.isArray(instruments) && instruments.length > 0) {
+      const instrumentIds = instruments.map(
+        (instrument) => instrument.instrument_id
+      );
+      musicianUpdates.instruments = instrumentIds;
+    }
+    try {
+      const { rows } = await pool.query(query, values);
+      const updatedUser = new User(rows[0]);
+      //console.log(updatedUser.entityType);
+      if (updatedUser.entityType === "musician" && musicianUpdates) {
+        const musician = await Musician.getMusicianByUserId(userId);
+        //console.log(musician);
+        if (musician) {
+          await Musician.updateMusician(musician.musicianId, musicianUpdates);
+        }
+      }
+
+      if (entityType === "organizer") {
+        const organizer = await Organizer.getOrganizerByUserId(userId);
+        if (organizer) {
+          await Organizer.updateOrganizer(organizer.organizer_id, {
+            user_id: userId,
+            company: company || organizer.company,
+          });
+        }
+      }
+
+      return updatedUser;
+    } catch (error) {
+      console.log(error);
       throw new Error("Failed to update user");
     }
   }

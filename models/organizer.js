@@ -22,6 +22,25 @@ class Organizer {
     }
   }
 
+  static async getOrganizerByUserId(userId) {
+    const query = `
+      SELECT *
+      FROM organizers
+      WHERE user_id = $1
+    `;
+    const values = [userId];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      if (rows.length === 0) {
+        return null;
+      }
+      return new Organizer(rows[0]);
+    } catch (error) {
+      throw new Error("Failed to get organizer by user ID");
+    }
+  }
+
   static async getOrganizerById(organizer_id) {
     const query = "SELECT * FROM organizers WHERE organizer_id = $1";
     const values = [organizer_id];
