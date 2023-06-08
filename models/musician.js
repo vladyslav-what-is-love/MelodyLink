@@ -253,6 +253,24 @@ class Musician {
     }
   }
 
+  static async getInstrumentsByMusicianId(musicianId) {
+    const query = `
+      SELECT instrument.instrument_id, instrument.instrument
+      FROM instrument
+      INNER JOIN musician_instrument ON instrument.instrument_id = musician_instrument.instrument_id
+      WHERE musician_instrument.musician_id = $1
+    `;
+    const values = [musicianId];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      //console.log(rows);
+      return rows.map((row) => new Instrument(row));
+    } catch (error) {
+      throw new Error("Failed to get instruments by musician ID");
+    }
+  }
+
   static async getMusiciansByInstruments(instrumentIds) {
     const query = `
       SELECT musician.*
@@ -272,32 +290,13 @@ class Musician {
     }
   }
 
-  static async getInstrumentsByMusicianId(musicianId) {
-    const query = `
-      SELECT instrument.instrument_id, instrument.instrument
-      FROM instrument
-      INNER JOIN musician_instrument ON instrument.instrument_id = musician_instrument.instrument_id
-      WHERE musician_instrument.musician_id = $1
-    `;
-    const values = [musicianId];
-
-    try {
-      const { rows } = await pool.query(query, values);
-      //console.log(rows);
-      return rows.map((row) => new Instrument(row));
-    } catch (error) {
-      throw new Error("Failed to get instruments by musician ID");
-    }
-  }
-
   static async getMusiciansByGenres(genreIds) {
-    console.log(genreIds);
     const query = `
     SELECT musician.*
     FROM musician
     INNER JOIN musician_genre ON musician.musician_id = musician_genre.musician_id
     WHERE musician_genre.genre_id IN (${genreIds
-      .map((id) => parseInt(id, 10))
+      .map((_, index) => `$${index + 1}`)
       .join(", ")})
   `;
     const values = genreIds;

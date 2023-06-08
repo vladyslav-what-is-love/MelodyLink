@@ -118,18 +118,6 @@ const getAllMusicians = async (req, res) => {
   }
 };
 
-// Контролер для пошуку музикантів за інструментами
-const getMusiciansByInstruments = async (req, res) => {
-  const { instrumentIds } = req.query;
-
-  try {
-    const musicians = await Musician.getMusiciansByInstruments(instrumentIds);
-    res.json(musicians);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to get musicians by instruments" });
-  }
-};
-
 // Контролер для отримання інструментів за ідентифікатором музиканта
 const getInstrumentsByMusicianId = async (req, res) => {
   const { musician_id } = req.params;
@@ -142,13 +130,31 @@ const getInstrumentsByMusicianId = async (req, res) => {
   }
 };
 
+// Контролер для пошуку музикантів за інструментами
+const getMusiciansByInstruments = async (req, res) => {
+  const { instrumentIds } = req.query;
+
+  const parsedIds = JSON.parse(instrumentIds);
+
+  const ids = parsedIds.map((id) => parseInt(id));
+  try {
+    const musicians = await Musician.getMusiciansByInstruments(ids);
+    res.json(musicians);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get musicians by instruments" });
+  }
+};
 // Контролер для пошуку музикантів за жанрами
 const getMusiciansByGenres = async (req, res) => {
   const { genreIds } = req.query;
 
-  console.log(genreIds);
+  const parsedIds = JSON.parse(genreIds);
+
+  const ids = parsedIds.map((id) => parseInt(id));
+
+  console.log(ids);
   try {
-    const musicians = await Musician.getMusiciansByGenres(genreIds);
+    const musicians = await Musician.getMusiciansByGenres(ids);
     res.json(musicians);
   } catch (error) {
     console.log(error);
