@@ -1,5 +1,5 @@
 const pool = require("../db");
-const User = require("./user");
+
 const Instrument = require("./instrument");
 const Genre = require("./genre");
 
