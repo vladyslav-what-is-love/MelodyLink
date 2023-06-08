@@ -62,6 +62,7 @@ const deleteOrganizer = async (req, res) => {
 const searchOrganizersByCompany = async (req, res) => {
   const { company } = req.query;
 
+  console.log(req.query);
   try {
     const organizers = await Organizer.searchOrganizersByCompany(company);
     res.json(organizers);

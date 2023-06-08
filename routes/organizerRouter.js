@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const organizerController = require("../controllers/organizerController");
 
+// Маршрут для пошуку організаторів за компанією
+router.get("/search", organizerController.searchOrganizersByCompany);
 // Маршрут для створення організатора
 router.post("/", organizerController.createOrganizer);
 
@@ -16,9 +18,6 @@ router.put("/:organizer_id", organizerController.updateOrganizer);
 
 // Маршрут для видалення організатора
 router.delete("/:organizer_id", organizerController.deleteOrganizer);
-
-// Маршрут для пошуку організаторів за компанією
-router.get("/search", organizerController.searchOrganizersByCompany);
 
 // Маршрут для отримання всіх організаторів
 router.get("/", organizerController.getAllOrganizers);
