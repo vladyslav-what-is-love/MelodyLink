@@ -80,6 +80,16 @@ const getAllOrganizers = async (req, res) => {
   }
 };
 
+// Контролер для отримання всіх компаній
+const getAllCompanies = async (req, res) => {
+  try {
+    const companies = await Organizer.getAllCompanies();
+    res.json(companies);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get companies" });
+  }
+};
+
 module.exports = {
   createOrganizer,
   getOrganizerById,
@@ -87,4 +97,5 @@ module.exports = {
   deleteOrganizer,
   searchOrganizersByCompany,
   getAllOrganizers,
+  getAllCompanies,
 };

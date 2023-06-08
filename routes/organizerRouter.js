@@ -5,6 +5,9 @@ const organizerController = require("../controllers/organizerController");
 // Маршрут для створення організатора
 router.post("/", organizerController.createOrganizer);
 
+// Маршрут для отримання всіх компаній
+router.get("/companies", organizerController.getAllCompanies);
+
 // Маршрут для отримання організатора за ідентифікатором
 router.get("/:organizer_id", organizerController.getOrganizerById);
 

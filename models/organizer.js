@@ -100,6 +100,19 @@ class Organizer {
       throw new Error("Failed to get organizers");
     }
   }
+
+  static async getAllCompanies() {
+    const query = "SELECT DISTINCT company FROM organizers";
+
+    try {
+      const { rows } = await pool.query(query);
+      const companies = rows.map((row) => row.company);
+      return companies;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get companies");
+    }
+  }
 }
 
 module.exports = Organizer;
