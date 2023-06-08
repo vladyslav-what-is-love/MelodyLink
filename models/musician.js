@@ -454,6 +454,25 @@ class Musician {
       throw new Error("Failed to remove genres from musician");
     }
   }
+
+  static async getMusicianCooperationRequests(musicianId) {
+    const query = `
+      SELECT cr.*, o.*, u.*
+      FROM cooperation_requests cr
+      JOIN organizers o ON cr.organizer_id = o.organizer_id
+      JOIN users u ON o.user_id = u.user_id
+      WHERE cr.musician_id = $1
+    `;
+    const values = [musicianId];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      return rows;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get all cooperation requests for musician");
+    }
+  }
 }
 
 module.exports = Musician;

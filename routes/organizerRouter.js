@@ -2,6 +2,12 @@ const express = require("express");
 const router = express.Router();
 const organizerController = require("../controllers/organizerController");
 
+// Маршрут для отримання всіх запитів на співпрацю для організатора
+router.get(
+  "/:organizerId/cooperation-requests",
+  organizerController.getOrganizerCooperationRequests
+);
+
 // Маршрут для пошуку організаторів за компанією
 router.get("/search", organizerController.searchOrganizersByCompany);
 // Маршрут для створення організатора

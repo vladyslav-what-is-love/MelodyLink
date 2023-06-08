@@ -1,20 +1,12 @@
-const port = 5000;
 const express = require("express");
 const cors = require("cors");
 var bodyParser = require("body-parser");
 const path = require("path");
 
 const app = express();
-app.use(
-  cors({
-    origin: `http://localhost:${port}`,
-    credentials: true,
-  })
-);
-
+app.use(cors());
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", `http://localhost:${port}`);
-  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", `http://localhost:3000`);
   next();
 });
 
@@ -61,6 +53,7 @@ app.use("/login", loginRouter);
   console.log(data);
   res.send("Data Received: " + JSON.stringify(data));
 });
+const port = 5450;
 
 app.post("/fuck", function (req, res) {
   console.log(req.body); // populated!
@@ -72,6 +65,8 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "Something went wrong" });
 });
+
+const port = 5440;
 
 // Запуск сервера
 app.listen(port, () => {

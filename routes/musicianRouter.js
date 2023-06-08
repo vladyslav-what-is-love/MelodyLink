@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const musicianController = require("../controllers/musicianController");
 
+router.get(
+  "/:musicianId/cooperation-requests",
+  musicianController.getMusicianCooperationRequests
+);
+
 // Маршрут для створення музиканта
 router.post("/", musicianController.createMusician);
 

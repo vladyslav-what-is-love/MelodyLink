@@ -216,6 +216,17 @@ const getGenresByMusicianId = async (req, res) => {
   }
 };
 
+const getMusicianCooperationRequests = async (req, res) => {
+  const { musicianId } = req.params;
+  try {
+    const cooperationRequests = await Musician.getMusicianCooperationRequests(
+      musicianId
+    );
+    res.status(200).json({ cooperationRequests });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get cooperation requests" });
+  }
+};
 module.exports = {
   createMusician,
   getMusicianById,
@@ -226,4 +237,5 @@ module.exports = {
   getInstrumentsByMusicianId,
   getMusiciansByGenres,
   getGenresByMusicianId,
+  getMusicianCooperationRequests,
 };

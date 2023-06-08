@@ -91,6 +91,21 @@ const getAllCompanies = async (req, res) => {
   }
 };
 
+const getOrganizerCooperationRequests = async (req, res) => {
+  //const organizerId = req.query.organizerId;
+
+  //onsole.log(req.query);
+  const { organizerId } = req.params;
+  try {
+    const cooperationRequests = await Organizer.getOrganizerCooperationRequests(
+      organizerId
+    );
+    res.status(200).json(cooperationRequests);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get cooperation requests" });
+  }
+};
+
 module.exports = {
   createOrganizer,
   getOrganizerById,
@@ -99,4 +114,5 @@ module.exports = {
   searchOrganizersByCompany,
   getAllOrganizers,
   getAllCompanies,
+  getOrganizerCooperationRequests,
 };

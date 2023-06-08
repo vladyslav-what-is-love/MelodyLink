@@ -128,6 +128,27 @@ class Organizer {
       throw new Error("Failed to get companies");
     }
   }
+
+  static async getOrganizerCooperationRequests(organizer_id) {
+    console.log(organizer_id);
+    const query = `
+      SELECT cr.*, m.*, u.*
+      FROM cooperation_requests cr
+      JOIN musician m ON cr.musician_id = m.musician_id
+      JOIN users u ON m.user_id = u.user_id
+      WHERE cr.organizer_id = $1
+    `;
+    const values = [organizer_id];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      console.log(rows);
+      return rows;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get all cooperation requests for organizer");
+    }
+  }
 }
 
 module.exports = Organizer;
