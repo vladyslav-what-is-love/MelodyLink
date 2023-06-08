@@ -93,8 +93,19 @@ async function login(req, res) {
     console.log(req.body);
     const user = await User.login(phone, password);
 
-    if (user) {
-      res.json({ id: user.id, role: user.role_name });
+    if (user.musician_id) {
+      res.json({
+        id: user.id,
+        role: user.role_name,
+        musician_id: user.musician_id,
+      });
+    }
+    if (user.organizer_id) {
+      res.json({
+        id: user.id,
+        role: user.role_name,
+        organizer_id: user.organizer_id,
+      });
     } else {
       res.status(401).json({ error: "Invalid phone or password" });
     }

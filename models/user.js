@@ -171,9 +171,11 @@ class User {
 
   static async login(phone, password) {
     const query = `
-      SELECT users.user_id AS id, roles.role_name
+      SELECT users.user_id AS id, roles.role_name, musician.musician_id, organizers.organizer_id
       FROM users
       JOIN roles ON users.role_id = roles.role_id
+      LEFT JOIN musician ON users.user_id = musician.user_id
+      LEFT JOIN organizers ON users.user_id = organizers.user_id
       WHERE users.phone = $1 AND users.password = $2
     `;
     const values = [phone, password];
@@ -181,11 +183,22 @@ class User {
     try {
       const { rows } = await pool.query(query, values);
       if (rows.length === 1) {
-        const { id, role_name } = rows[0];
-        console.log(rows[0]);
-        return { id, role_name }; // Повернення об'єкта з властивостями `id` та `role`
+        const { id, role_name, musician_id, organizer_id } = rows[0];
+        //console.log(rows[0]);
+
+        //let entityId;
+        if (musician_id) {
+          return { id, role_name, musician_id };
+        } else if (organizer_id) {
+          return { id, role_name, organizer_id };
+        } else {
+          return null;
+        }
+
+        //console.log({ id, role_name, entityId });
+        //return { id, role_name, entityId };
       } else {
-        return null; // Повернення null, якщо користувача не знайдено або знайдено більше одного користувача зі співпадаючими полями
+        return null;
       }
     } catch (error) {
       console.log(error);
