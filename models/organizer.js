@@ -1,5 +1,4 @@
 const pool = require("../db");
-const User = require("./user");
 
 class Organizer {
   constructor(organizerData) {
@@ -22,7 +21,7 @@ class Organizer {
     }
   }
 
-  static async getOrganizerByUserId(userId) {
+  static async getNiceOrganizerByUserId(userId) {
     const query = `
       SELECT *
       FROM organizers

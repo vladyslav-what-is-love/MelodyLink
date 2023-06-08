@@ -141,6 +141,7 @@ class User {
       genres,
       instruments,
     } = updates;
+    console.log(updates.company);
     //console.log(genres);
 
     /*if (roleName) {
@@ -179,28 +180,6 @@ class User {
       entityType,
       userId,
     ];
-    //console.log(updates.genres);
-
-    /*const musicianUpdates = {};
-
-    if (updates.experience) {
-      musicianUpdates.experience = updates.experience;
-    }
-
-    if (Array.isArray(updates.genres) && updates.genres.length > 0) {
-      musicianUpdates.genres = updates.genres;
-    }
-
-    if (Array.isArray(updates.instruments) && updates.instruments.length > 0) {
-      musicianUpdates.instruments = updates.instruments;
-    }
-
-    //console.log(updates.genres);
-    if (genres || instruments) {
-      musicianUpdates.experience = updates.experience || null;
-      musicianUpdates.genres = genres || [];
-      musicianUpdates.instruments = instruments || [];
-    }*/
 
     const musicianUpdates = {};
     if (updates.experience) {
@@ -230,9 +209,11 @@ class User {
         }
       }
 
-      if (entityType === "organizer") {
-        const organizer = await Organizer.getOrganizerByUserId(userId);
+      //console.log(updatedUser.entityType);
+      if (updatedUser.entityType === "organizer") {
+        const organizer = await Organizer.getNiceOrganizerByUserId(userId);
         if (organizer) {
+          console.log(updates.company);
           await Organizer.updateOrganizer(organizer.organizer_id, {
             user_id: userId,
             company: company || organizer.company,
