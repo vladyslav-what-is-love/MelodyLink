@@ -71,7 +71,7 @@ async function deleteUser(req, res) {
 
     await User.deleteUser(userId);
 
-    res.sendStatus(204);
+    res.json({ error: "User was deleted" });
   } catch (error) {
     res.status(500).json({ error: "Unable to delete user" });
   }
@@ -91,9 +91,11 @@ async function login(req, res) {
   try {
     const { phone, password } = req.body;
 
-    console.log(req.body);
+    //console.log(req.body);
     const user = await User.login(phone, password);
 
+    console.log(user);
+    //console.log(user);
     if (user.musician_id) {
       res.json({
         id: user.id,
@@ -107,7 +109,10 @@ async function login(req, res) {
         organizer_id: user.organizer_id,
       });
     } else {
-      res.status(401).json({ error: "Invalid phone or password" });
+      res.json({
+        id: user.id,
+        role: user.role_name,
+      });
     }
   } catch (error) {
     console.log(error);

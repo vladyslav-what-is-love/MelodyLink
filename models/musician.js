@@ -214,6 +214,33 @@ class Musician {
       throw new Error("Failed to delete musician");
     }
   }
+  static deleteMusicianByUserId(userId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const musician = await Musician.getMusicianByUserId(userId);
+        if (musician) {
+          const musicianId = musician.musician_id;
+          const queryDeleteInstruments =
+            "DELETE FROM musician_instruments WHERE musician_id = $1";
+          const queryDeleteGenres =
+            "DELETE FROM musician_genres WHERE musician_id = $1";
+          const queryDeleteMusician =
+            "DELETE FROM musician WHERE musician_id = $1";
+
+          await pool.query(queryDeleteInstruments, [musicianId]);
+          await pool.query(queryDeleteGenres, [musicianId]);
+          await pool.query(queryDeleteMusician, [musicianId]);
+
+          console.log("Musician deleted successfully");
+        }
+
+        resolve();
+      } catch (error) {
+        console.log(error);
+        reject("Failed to delete musician");
+      }
+    });
+  }
 
   static async getInstrumentsByMusicianId(musicianId) {
     const query = `

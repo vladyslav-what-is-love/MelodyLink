@@ -9,8 +9,8 @@ const pool = new Pool({
 });
 
 module.exports = pool;
-/*
 
+/*
   //Для створення напряму
 
   async function testDatabaseConnection() {
@@ -42,3 +42,4 @@ module.exports = pool;
 // Виклик функції для перевірки підключення та створення жанру
 
 testDatabaseConnection();*/
+//pool.end();

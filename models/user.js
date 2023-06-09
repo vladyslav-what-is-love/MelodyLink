@@ -66,6 +66,7 @@ class User {
         throw new Error(`Role '${roleName}' not found`);
       }
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to get role");
     }
   }
@@ -182,20 +183,52 @@ class User {
 
   static async deleteUser(userId) {
     try {
+      /*const musician = await Musician.getMusicianByUserId(userId);
+      if (musician) {
+        const musicianId = musician.musician_id;
+
+        // Видаляємо жанри музиканта
+        const queryDeleteMusicianGenres =
+          "DELETE FROM musician_genre WHERE musician_id = $1";
+        await pool.query(queryDeleteMusicianGenres, [musicianId]);
+
+        // Видаляємо інструменти музиканта
+        const queryDeleteMusicianInstruments =
+          "DELETE FROM musician_instrument WHERE musician_id = $1";
+        await pool.query(queryDeleteMusicianInstruments, [musicianId]);
+
+        // Видаляємо музиканта
+        const queryDeleteMusician = "DELETE FROM musician WHERE user_id = $1";
+        await pool.query(queryDeleteMusician, [userId]);
+
+        console.log("Musician deleted successfully");
+      }
+
+      const organizer = await Organizer.getNiceOrganizerByUserId(userId);
+      if (organizer) {
+        const queryDeleteOrganizer =
+          "DELETE FROM organizers WHERE user_id = $1";
+        await pool.query(queryDeleteOrganizer, [userId]);
+        console.log("Organizer deleted successfully");
+      }*/
+
       const musician = await Musician.getMusicianByUserId(userId);
       if (musician) {
-        await Musician.deleteMusician(musician.musician_id);
+        const queryDeleteMusician = "DELETE FROM musician WHERE user_id = $1";
+        await pool.query(queryDeleteMusician, [userId]);
       }
-
-      const organizer = await Organizer.getOrganizerByUserId(userId);
+      const organizer = await Organizer.getNiceOrganizerByUserId(userId);
       if (organizer) {
-        await Organizer.deleteOrganizer(organizer.organizer_id);
+        const queryDeleteOrganizer =
+          "DELETE FROM organizers WHERE user_id = $1";
+        await pool.query(queryDeleteOrganizer, [userId]);
+        console.log("Organizer deleted successfully");
       }
-
-      const query = "DELETE FROM users WHERE user_id = $1";
-      const values = [userId];
-      await pool.query(query, values);
+      const queryDeleteUser = "DELETE FROM users WHERE user_id = $1";
+      await pool.query(queryDeleteUser, [userId]);
+      console.log("User deleted successfully");
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to delete user");
     }
   }
@@ -238,7 +271,10 @@ class User {
       if (rows.length === 1) {
         const { id, role_name, musician_id, organizer_id } = rows[0];
 
-        if (musician_id) {
+        console.log(rows[0]);
+        if (role_name == "admin") {
+          return { id, role_name };
+        } else if (musician_id) {
           return { id, role_name, musician_id };
         } else if (organizer_id) {
           return { id, role_name, organizer_id };
