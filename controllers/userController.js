@@ -71,8 +71,9 @@ async function deleteUser(req, res) {
 
     await User.deleteUser(userId);
 
-    res.json({ error: "User was deleted" });
+    res.json({ message: "User was deleted" });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Unable to delete user" });
   }
 }
